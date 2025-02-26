@@ -1,0 +1,24 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "My little chat project on React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickyEnglish2/frontend-project-12.git"
+  },
+  "keywords": [
+    "chat",
+    "React",
+    "Redux-toolkit"
+  ],
+  "author": "Fomin Ilya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NickyEnglish2/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/NickyEnglish2/frontend-project-12#readme"
+}
