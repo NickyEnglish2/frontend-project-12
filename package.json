@@ -4,7 +4,10 @@
   "description": "A little project for chat",
   "main": "index.js",
   "scripts": {
-    "test": "undefined"
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/dist",
+    "test": "undefined",
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
