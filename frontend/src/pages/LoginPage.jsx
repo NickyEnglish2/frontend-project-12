@@ -1,16 +1,31 @@
 import { Formik, Form, Field } from 'formik';
-import { Button, Form as BootstrapForm, Container, Card, Row, Col, Image } from 'react-bootstrap';
-import loginImage from '../assets/avatar.jpg'
+import { Button, Form as BootstrapForm, Container, Card, Row, Col, Image, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '../slices/authSlice.js';
+import loginApi from '../utilities/loginAPI.js';
+import { useNavigate } from 'react-router-dom';
+import loginImage from '../assets/avatar.jpg';
 import loginPage from '../validations/loginPage.js';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { status, errors } = useSelector((state) => state.auth);
+
   const initialValues = {
     username: '',
     password: '',
   };
 
-  const onSubmit = (values) => {
-    console.log('Форма отправлена', values);
+  const handleLogin = async (values) => {
+    dispatch(loginStart());
+    try {
+      const token = await loginApi(values);
+      dispatch(loginSuccess(token));
+      navigate('/');
+    } catch (err) {
+      dispatch(loginFailure(err.message));
+    }
   };
 
   return (
@@ -33,10 +48,11 @@ const LoginPage = () => {
           <Card style={{ height: '100%', borderRadius: '0', border: 'none' }}>
             <Card.Body className="p-4">
               <h1 className="text-center mb-4">Войти</h1>
+              {errors && <Alert variant="danger">{errors}</Alert>}
               <Formik
                 initialValues={initialValues}
                 validationSchema={loginPage}
-                onSubmit={onSubmit}
+                onSubmit={handleLogin}
               >
                 {({ errors, touched }) => (
                   <Form>
@@ -67,8 +83,8 @@ const LoginPage = () => {
                     </BootstrapForm.Group>
 
                     <div className="d-grid">
-                      <Button variant="primary" type="submit">
-                        Войти
+                      <Button variant="primary" type="submit" disabled={status === 'loading'}>
+                        {status === 'loading' ? 'Загрузка...' : 'Войти'}
                       </Button>
                     </div>
                   </Form>
