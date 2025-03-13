@@ -1,0 +1,27 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "A little project for chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "undefined"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickyEnglish2/frontend-project-12.git"
+  },
+  "keywords": [
+    "Chat",
+    "React",
+    "Websocket"
+  ],
+  "author": "Fomin Ilya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NickyEnglish2/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/NickyEnglish2/frontend-project-12#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
