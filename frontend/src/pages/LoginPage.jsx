@@ -20,8 +20,8 @@ const LoginPage = () => {
   const handleLogin = async (values) => {
     dispatch(loginStart());
     try {
-      const token = await loginApi(values);
-      dispatch(loginSuccess(token));
+      const response = await loginApi(values);
+      dispatch(loginSuccess({ token: response.token, username: response.username }));
       navigate('/');
     } catch (err) {
       dispatch(loginFailure(err.message));

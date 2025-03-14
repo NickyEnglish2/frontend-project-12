@@ -4,39 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import fetchChannels from '../utilities/fetchChannels.js';
-import fetchMessages from '../utilities/fetchMessages.js';
+import sendMessageApi from '../utilities/sendMessageApi.js';
 import { setCurrentChannel } from '../slices/channelsSlice.js';
 import { addMessage } from '../slices/messagesSlice.js';
+import socket from '../utilities/socket.js';
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   const { messages } = useSelector((state) => state.messages);
-  //  const { token } = useSelector((state) => state.auth);
+  const { token, username } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(fetchChannels());
-    dispatch(fetchMessages());
-  }, [dispatch]);
-
-  const handleSelectChannel = (channelId) => {
-    dispatch(setCurrentChannel(channelId));
-  };
-
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    const message = e.target.message.value.trim();
-    if (message) {
-      dispatch(addMessage({ body: message, channelId: currentChannelId, username: 'user' }));
-      e.target.reset();
-    }
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login');
-  };
+    dispatch(fetchChannels(token));
+  }, [dispatch, token]);
 
   const currentMessages = messages.filter((msg) => msg.channelId === currentChannelId);
 
@@ -46,10 +28,52 @@ const MainPage = () => {
     return `${count} сообщений`;
   };
 
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    const message = e.target.message.value.trim();
+    if (message) {
+      dispatch(sendMessageApi({ body: message, channelId: currentChannelId, username }));
+      e.target.reset();
+    }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
+
+  const handleSelectChannel = (channelId) => {
+    dispatch(setCurrentChannel(channelId));
+  };
+
+  useEffect(() => {
+    if (token) {
+      socket.auth = { token };
+      socket.connect();
+
+      socket.on('newMessage', (payload) => {
+        dispatch(addMessage(payload));
+      });
+
+      socket.on('connect_error', (err) => {
+        console.error('Ошибка подключения:', err.message);
+      });
+
+      socket.on('reconnect', () => {
+        console.log('Подключение восстановлено');
+      });
+    }
+
+    return () => {
+      socket.off('newMessage');
+      socket.off('connect_error');
+      socket.off('reconnect');
+    };
+  }, [dispatch, token]);
+
   return (
     <Container fluid className="vh-100">
       <Row className="h-100">
-        {/* Список каналов */}
         <Col md={3} className="bg-light border-end p-3 d-flex flex-column">
           <h5 className="mb-3">Каналы</h5>
           <ListGroup variant="flush" className="flex-grow-1 mb-3">
@@ -70,7 +94,6 @@ const MainPage = () => {
           </Button>
         </Col>
 
-        {/* Чат и форма отправки сообщения */}
         <Col md={9} className="d-flex flex-column h-100 p-3">
           <Card className="flex-grow-1 mb-3">
             <Card.Body className="d-flex flex-column">

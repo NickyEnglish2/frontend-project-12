@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import fetchMessages from '../utilities/fetchMessages.js';
+import sendMessageApi from '../utilities/sendMessageApi.js';
 
 const initialState = {
   messages: [],
@@ -17,15 +17,14 @@ const messagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMessages.pending, (state) => {
+      .addCase(sendMessageApi.pending, (state) => {
         state.status = true;
         state.errors = null;
       })
-      .addCase(fetchMessages.fulfilled, (state, action) => {
-        state.messages = action.payload;
+      .addCase(sendMessageApi.fulfilled, (state) => {
         state.status = 'success';
       })
-      .addCase(fetchMessages.rejected, (state, action) => {
+      .addCase(sendMessageApi.rejected, (state, action) => {
         state.status = 'failed';
         state.errors = action.error.message;
       });
