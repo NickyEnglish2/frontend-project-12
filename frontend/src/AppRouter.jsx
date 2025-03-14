@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MainPage from './pages/MainPage.jsx';
 import LoginPage from './pages/LoginPage.jsx'
 import NotFoundPage from './pages/NotFound.jsx';
+import SignInPage from './pages/SignInPage.jsx';
 import { logout } from './slices/authSlice.js';
 
 const AppRouter = () => {
@@ -26,6 +27,10 @@ const AppRouter = () => {
       <Route
         path='/login'
         element={!isAuthenticated ? <LoginPage /> : <Navigate to='/' />}
+      />
+      <Route
+        path='/signup'
+        element={!isAuthenticated ? <SignInPage /> : <Navigate to='/' />}
       />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
