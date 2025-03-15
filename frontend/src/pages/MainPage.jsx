@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Button, ListGroup, Form, Row, Col, Container, Card } from 'react-bootstrap';
+import { Button, ListGroup, Form, Row, Col, Container, Card, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { logout } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { BiAddToQueue } from 'react-icons/bi';
+import { FaEllipsisV } from "react-icons/fa";
 import fetchChannels from '../utilities/fetchChannels.js';
 import sendMessageApi from '../utilities/sendMessageApi.js';
-import { setCurrentChannel, addChannel } from '../slices/channelsSlice.js';
-import { addMessage } from '../slices/messagesSlice.js';
+import removeChannelApi from '../utilities/removeChannelApi.js';
+import removeMessageApi from '../utilities/removeMessagesApi.js';
+import { setCurrentChannel, addChannel, removeChannel } from '../slices/channelsSlice.js';
+import { addMessage, removeMessage } from '../slices/messagesSlice.js';
 import socket from '../utilities/socket.js';
 import AddChannelModal from '../modals/AddChannelModal.jsx';
+import ConfirmDeleteModal from '../modals/ConfirmDeleteModal.jsx';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -20,6 +24,8 @@ const MainPage = () => {
   const { token, username } = useSelector((state) => state.auth);
 
   const [showAddChannelModal, setShowAddChannelModal] = useState(false);
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
+  const [channelToDelete, setChannelToDelete] = useState(null);
 
   useEffect(() => {
     dispatch(fetchChannels(token));
@@ -38,8 +44,24 @@ const MainPage = () => {
     navigate('/login');
   };
 
-  const handleSelectChannel = (channelId) => {
-    dispatch(setCurrentChannel(channelId));
+  const handleDeleteChannel = async () => {
+    if (channelToDelete) {
+      try {
+        const messagesToDelete = messages.filter((msg) => msg.channelId === channelToDelete);
+
+        await Promise.all(
+          messagesToDelete.map((msg) => removeMessageApi(msg.id, token))
+        );
+
+        await removeChannelApi(channelToDelete, token);
+
+        dispatch(removeMessage(channelToDelete));
+
+        setShowConfirmDeleteModal(false);
+      } catch (err) {
+        console.error('Ошибка при удалении', err);
+      }
+    }
   };
 
   const formik = useFormik({
@@ -67,6 +89,10 @@ const MainPage = () => {
         dispatch(addChannel(payload));
       });
 
+      socket.on('removeChannel', (payload) => {
+        dispatch(removeChannel(payload.id));
+      });
+
       socket.on('connect_error', (err) => {
         console.error('Ошибка подключения:', err.message);
       });
@@ -79,6 +105,7 @@ const MainPage = () => {
     return () => {
       socket.off('newMessage');
       socket.off('newChannel');
+      socket.off('removeChannel');
       socket.off('connect_error');
       socket.off('reconnect');
     };
@@ -96,7 +123,7 @@ const MainPage = () => {
               className="p-0"
               title="Добавить канал"
             >
-              <BiAddToQueue size={20} /> {/* Используем иконку BiAddToQueue */}
+              <BiAddToQueue size={20} />
             </Button>
           </div>
           <ListGroup variant="flush" className="flex-grow-1 mb-3">
@@ -105,10 +132,39 @@ const MainPage = () => {
                 key={channel.id}
                 action
                 active={channel.id === currentChannelId}
-                onClick={() => handleSelectChannel(channel.id)}
+                onClick={() => dispatch(setCurrentChannel(channel.id))}
                 style={{ cursor: 'pointer' }}
               >
-                # {channel.name}
+                <div className="d-flex justify-content-between align-items-center">
+                  <span># {channel.name}</span>
+                  {channel.removable && (
+                    <Dropdown onClick={(e) => e.stopPropagation()}>
+                      <Dropdown.Toggle 
+                        variant="link"
+                        id="dropdown-channel-actions"
+                        className="p-1 rounded bg-light border-0"
+                        style={{
+                          backgroundColor: "#a4a4a4",
+                          borderRadius: "4px",
+                          padding: "4px 8px",
+                        }}
+                      >
+                        <FaEllipsisV size={16} />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item>Редактировать</Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => {
+                            setChannelToDelete(channel.id);
+                            setShowConfirmDeleteModal(true);
+                          }}
+                        >
+                          Удалить
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
+                </div>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -164,6 +220,13 @@ const MainPage = () => {
       <AddChannelModal
         show={showAddChannelModal}
         onHide={() => setShowAddChannelModal(false)}
+      />
+
+      <ConfirmDeleteModal
+        show={showConfirmDeleteModal}
+        onHide={() => setShowConfirmDeleteModal(false)}
+        onConfirm={handleDeleteChannel}
+        channelName={channels.find((ch) => ch.id === channelToDelete)?.name || ''}
       />
     </Container>
   );
