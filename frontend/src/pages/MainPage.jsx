@@ -1,14 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, ListGroup, Form, Row, Col, Container, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { logout } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { BiAddToQueue } from 'react-icons/bi';
 import fetchChannels from '../utilities/fetchChannels.js';
 import sendMessageApi from '../utilities/sendMessageApi.js';
-import { setCurrentChannel } from '../slices/channelsSlice.js';
+import { setCurrentChannel, addChannel } from '../slices/channelsSlice.js';
 import { addMessage } from '../slices/messagesSlice.js';
 import socket from '../utilities/socket.js';
+import AddChannelModal from '../modals/AddChannelModal.jsx';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const MainPage = () => {
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   const { messages } = useSelector((state) => state.messages);
   const { token, username } = useSelector((state) => state.auth);
+
+  const [showAddChannelModal, setShowAddChannelModal] = useState(false);
 
   useEffect(() => {
     dispatch(fetchChannels(token));
@@ -59,6 +63,10 @@ const MainPage = () => {
         dispatch(addMessage(payload));
       });
 
+      socket.on('newChannel', (payload) => {
+        dispatch(addChannel(payload));
+      });
+
       socket.on('connect_error', (err) => {
         console.error('Ошибка подключения:', err.message);
       });
@@ -70,6 +78,7 @@ const MainPage = () => {
 
     return () => {
       socket.off('newMessage');
+      socket.off('newChannel');
       socket.off('connect_error');
       socket.off('reconnect');
     };
@@ -79,7 +88,17 @@ const MainPage = () => {
     <Container fluid className="vh-100">
       <Row className="h-100">
         <Col md={3} className="bg-light border-end p-3 d-flex flex-column">
-          <h5 className="mb-3">Каналы</h5>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="mb-0">Каналы</h5>
+            <Button
+              variant="link"
+              onClick={() => setShowAddChannelModal(true)}
+              className="p-0"
+              title="Добавить канал"
+            >
+              <BiAddToQueue size={20} /> {/* Используем иконку BiAddToQueue */}
+            </Button>
+          </div>
           <ListGroup variant="flush" className="flex-grow-1 mb-3">
             {channels.map((channel) => (
               <ListGroup.Item
@@ -141,6 +160,11 @@ const MainPage = () => {
           </Form>
         </Col>
       </Row>
+
+      <AddChannelModal
+        show={showAddChannelModal}
+        onHide={() => setShowAddChannelModal(false)}
+      />
     </Container>
   );
 };
