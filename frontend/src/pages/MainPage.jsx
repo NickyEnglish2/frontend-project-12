@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Button, ListGroup, Form, Row, Col, Container, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import { logout } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import fetchChannels from '../utilities/fetchChannels.js';
@@ -28,15 +29,6 @@ const MainPage = () => {
     return `${count} сообщений`;
   };
 
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    const message = e.target.message.value.trim();
-    if (message) {
-      dispatch(sendMessageApi({ body: message, channelId: currentChannelId, username }));
-      e.target.reset();
-    }
-  };
-
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');
@@ -45,6 +37,18 @@ const MainPage = () => {
   const handleSelectChannel = (channelId) => {
     dispatch(setCurrentChannel(channelId));
   };
+
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: (values, { resetForm }) => {
+      if (values.message.trim()) {
+        dispatch(sendMessageApi({ body: values.message, channelId: currentChannelId, username }));
+        resetForm();
+      }
+    },
+  });
 
   useEffect(() => {
     if (token) {
@@ -114,15 +118,22 @@ const MainPage = () => {
             </Card.Body>
           </Card>
 
-          <Form onSubmit={handleSendMessage} className="mt-auto">
+          <Form onSubmit={formik.handleSubmit} className="mt-auto">
             <Form.Group>
               <Form.Control
                 as="textarea"
                 name="message"
                 rows={2}
                 placeholder="Введите сообщение..."
+                value={formik.values.message}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={formik.touched.message && !!formik.errors.message}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.message}
+              </Form.Control.Feedback>
             </Form.Group>
             <Button type="submit" className="mt-2">
               Отправить
