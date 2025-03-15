@@ -4,10 +4,10 @@ export default Yup.object().shape({
   username: Yup.string()
     .required('Обязательное поле')
     .min(3, 'Не менее 3 символов')
-    .max(10, 'Не более 10 символов'),
+    .max(20, 'Не более 20 символов'),
   password: Yup.string()
     .required('Обязательное поле')
-    .min(5, 'Пароль не менее 5 символов')
+    .min(6, 'Пароль не менее 6 символов')
     .max(15, 'Пароль не более 15 символов'),
   confirmPassword: Yup.string()
     .required('Обязательное поле')

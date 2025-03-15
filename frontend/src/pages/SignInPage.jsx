@@ -15,7 +15,7 @@ const SignInPage = () => {
         password: values.password,
       });
       console.log(response.data);
-      navigate('/login');
+      navigate('/');
     } catch (err) {
       console.error('Ошибка регистрации:', err.response?.data?.message || err.message);
     }
