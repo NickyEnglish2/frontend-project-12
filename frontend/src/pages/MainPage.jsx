@@ -10,11 +10,12 @@ import fetchChannels from '../utilities/fetchChannels.js';
 import sendMessageApi from '../utilities/sendMessageApi.js';
 import removeChannelApi from '../utilities/removeChannelApi.js';
 import removeMessageApi from '../utilities/removeMessagesApi.js';
-import { setCurrentChannel, addChannel, removeChannel } from '../slices/channelsSlice.js';
+import { setCurrentChannel, addChannel, removeChannel, updateChannel } from '../slices/channelsSlice.js';
 import { addMessage, removeMessage } from '../slices/messagesSlice.js';
 import socket from '../utilities/socket.js';
 import AddChannelModal from '../modals/AddChannelModal.jsx';
 import ConfirmDeleteModal from '../modals/ConfirmDeleteModal.jsx';
+import EditChannelModal from '../modals/EditChannelModal.jsx';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,9 @@ const MainPage = () => {
 
   const [showAddChannelModal, setShowAddChannelModal] = useState(false);
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
+  const [showEditChannelModal, setShowEditChannelModal] = useState(false);
   const [channelToDelete, setChannelToDelete] = useState(null);
+  const [channelToEdit, setChannelToEdit] = useState(null);
 
   useEffect(() => {
     dispatch(fetchChannels(token));
@@ -64,6 +67,11 @@ const MainPage = () => {
     }
   };
 
+  const handleEditChannel = (channel) => {
+    setChannelToEdit(channel);
+    setShowEditChannelModal(true);
+  };
+
   const formik = useFormik({
     initialValues: {
       message: '',
@@ -93,6 +101,11 @@ const MainPage = () => {
         dispatch(removeChannel(payload.id));
       });
 
+      socket.on('renameChannel', (payload) => {
+        console.log('Получены данные:', payload)
+        dispatch(updateChannel(payload));
+      });
+
       socket.on('connect_error', (err) => {
         console.error('Ошибка подключения:', err.message);
       });
@@ -106,6 +119,7 @@ const MainPage = () => {
       socket.off('newMessage');
       socket.off('newChannel');
       socket.off('removeChannel');
+      socket.off('renameChannel');
       socket.off('connect_error');
       socket.off('reconnect');
     };
@@ -152,7 +166,9 @@ const MainPage = () => {
                         <FaEllipsisV size={16} />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item>Редактировать</Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => handleEditChannel(channel)}
+                        >Редактировать</Dropdown.Item>
                         <Dropdown.Item
                           onClick={() => {
                             setChannelToDelete(channel.id);
@@ -227,6 +243,12 @@ const MainPage = () => {
         onHide={() => setShowConfirmDeleteModal(false)}
         onConfirm={handleDeleteChannel}
         channelName={channels.find((ch) => ch.id === channelToDelete)?.name || ''}
+      />
+
+      <EditChannelModal
+        show={showEditChannelModal}
+        onHide={() => setShowEditChannelModal(false)}
+        channel={channelToEdit}
       />
     </Container>
   );
