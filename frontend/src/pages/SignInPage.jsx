@@ -11,7 +11,7 @@ import Header from './Header.jsx';
 const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { signUpErr } = useSelector((state) => state.auth);
+  const { status, signUpErr } = useSelector((state) => state.auth);
 
   const handleSubmit = async (values) => {
     dispatch(loginStart());
@@ -108,8 +108,8 @@ const SignInPage = () => {
                   </BootstrapForm.Group>
 
                   <div className="d-grid">
-                    <Button variant="primary" type="submit">
-                      Зарегистрироваться
+                    <Button variant="primary" type="submit" disabled={status === 'loading'}>
+                      {status === 'loading' ? 'Загрузка...' : 'Зарегистрироваться'}
                     </Button>
                   </div>
 
