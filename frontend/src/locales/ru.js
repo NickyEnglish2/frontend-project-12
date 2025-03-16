@@ -35,6 +35,32 @@ export default {
         back: 'Назад',
       },
     },
+    notFoundPage: {
+      title: '404 - Страница не найдена',
+      body1: 'Извините, запрашиваемая страница не существует. Возможно, она была удалена или перемещена.',
+      body2: 'Вы можете вернуться на главную страницу, нажав на кнопку ниже.',
+      backButton: 'Вернуться на главную',
+    },
+    header: {
+      logoutBtn: 'Выйти',
+    },
+    mainPage: {
+      channels: 'Каналы',
+      addChannelBtn: 'Добавить канал',
+      dropDown: {
+        edit: 'Редактировать',
+        delete: 'Удалить',
+      },
+      form: {
+        placeholder: 'Введите сообщение...',
+        sendBtn: 'Отправить',
+      },
+      messages: {
+        messageCount_one: '{{count}} сообщение',
+        messageCount_few: '{{count}} сообщения',
+        messageCount_many: '{{count}} сообщений',
+      },
+    },
     validation: {
       signUp: {
         username: {

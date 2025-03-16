@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, ListGroup, Form, Row, Col, Container, Card, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from "react-icons/fa";
 import fetchChannels from '../utilities/fetchChannels.js';
@@ -18,6 +19,7 @@ import Header from './Header.jsx';
 
 const MainPage = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   const { messages } = useSelector((state) => state.messages);
   const { token, username } = useSelector((state) => state.auth);
@@ -35,9 +37,7 @@ const MainPage = () => {
   const currentMessages = messages.filter((msg) => msg.channelId === currentChannelId);
 
   const formatMessageCount = (count) => {
-    if (count === 1) return `${count} сообщение`;
-    if (count > 1 && count < 5) return `${count} сообщения`;
-    return `${count} сообщений`;
+    return t('mainPage.messages.messageCount', { count });
   };
 
   const handleDeleteChannel = async () => {
@@ -95,7 +95,6 @@ const MainPage = () => {
       });
 
       socket.on('renameChannel', (payload) => {
-        console.log('Получены данные:', payload)
         dispatch(updateChannel(payload));
       });
 
@@ -125,12 +124,12 @@ const MainPage = () => {
         <Row className="h-100">
           <Col md={3} className="bg-light border-end p-3 d-flex flex-column">
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h5 className="mb-0">Каналы</h5>
+              <h5 className="mb-0">{t('mainPage.channels')}</h5>
               <Button
                 variant="link"
                 onClick={() => setShowAddChannelModal(true)}
                 className="p-0"
-                title="Добавить канал"
+                title={t('mainPage.addChannelBtn')}
               >
                 <BiAddToQueue size={20} />
               </Button>
@@ -164,7 +163,7 @@ const MainPage = () => {
                           <Dropdown.Item
                             onClick={() => handleEditChannel(channel)}
                           >
-                            Редактировать
+                            {t('mainPage.dropDown.edit')}
                           </Dropdown.Item>
                           <Dropdown.Item
                             onClick={() => {
@@ -172,7 +171,7 @@ const MainPage = () => {
                               setShowConfirmDeleteModal(true);
                             }}
                           >
-                            Удалить
+                            {t('mainPage.dropDown.delete')}
                           </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
@@ -209,7 +208,7 @@ const MainPage = () => {
                   as="textarea"
                   name="message"
                   rows={2}
-                  placeholder="Введите сообщение..."
+                  placeholder={t('mainPage.form.placeholder')}
                   value={formik.values.message}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -221,7 +220,7 @@ const MainPage = () => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Button type="submit" className="mt-2">
-                Отправить
+                {t('mainPage.form.sendBtn')}
               </Button>
             </Form>
           </Col>

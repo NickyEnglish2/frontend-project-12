@@ -1,8 +1,10 @@
 import { Container, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleGoHome = () => {
     navigate('/');
@@ -15,16 +17,16 @@ const NotFoundPage = () => {
     >
       <Card className="text-center shadow-lg" style={{ width: '100%', maxWidth: '600px', padding: '20px' }}>
         <Card.Body>
-          <h1 className="display-4">404 - Страница не найдена</h1>
+          <h1 className="display-4">{t('notFoundPage.title')}</h1>
           <p className="lead">
-            Извините, запрашиваемая страница не существует. Возможно, она была удалена или перемещена.
+            {t('notFoundPage.body1')}
           </p>
           <hr className="my-4" />
           <p>
-            Вы можете вернуться на главную страницу, нажав на кнопку ниже.
+            {t('notFoundPage.body2')}
           </p>
           <Button variant="primary" onClick={handleGoHome}>
-            Вернуться на главную
+            {t('notFoundPage.backButton')}
           </Button>
         </Card.Body>
       </Card>

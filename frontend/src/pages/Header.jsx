@@ -2,10 +2,12 @@ import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../slices/authSlice';
+import { useTranslation } from 'react-i18next';
 
 const Header = ({ showLogoutButton }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -26,7 +28,7 @@ const Header = ({ showLogoutButton }) => {
           <Nav className="ms-auto">
             {showLogoutButton && (
               <Button variant="outline-primary" onClick={handleLogout}>
-                Выйти
+                {t('header.logoutBtn')}
               </Button>
             )}
           </Nav>
