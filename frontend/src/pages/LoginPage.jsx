@@ -6,6 +6,7 @@ import loginApi from '../utilities/loginAPI.js';
 import { useNavigate, Link } from 'react-router-dom';
 import loginImage from '../assets/avatar.jpg';
 import loginPage from '../validations/loginPage.js';
+import Header from './Header.jsx';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -32,71 +33,74 @@ const LoginPage = () => {
   });
 
   return (
-    <Container
-      className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: '100vh' }}
-    >
-      <Row className="g-0 shadow-lg" style={{ maxWidth: '800px', width: '100%' }}>
-        <Col md={6} className="d-none d-md-flex justify-content-center align-items-center" style={{ backgroundColor: '#ffffff' }}>
-          <Image
-            src={loginImage}
-            alt="Login"
-            roundedCircle
-            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-          />
-        </Col>
+    <>
+      <Header showLogoutButton={false} />
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: '80vh' }}
+      >
+        <Row className="g-0 shadow-lg" style={{ maxWidth: '800px', width: '100%' }}>
+          <Col md={6} className="d-none d-md-flex justify-content-center align-items-center" style={{ backgroundColor: '#ffffff' }}>
+            <Image
+              src={loginImage}
+              alt="Login"
+              roundedCircle
+              style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+            />
+          </Col>
 
-        <Col md={6}>
-          <Card style={{ height: '100%', borderRadius: '0', border: 'none' }}>
-            <Card.Body className="p-4">
-              <h1 className="text-center mb-4">Войти</h1>
-              <form onSubmit={formik.handleSubmit}>
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Control
-                    type="text"
-                    name="username"
-                    placeholder="Ник пользователя"
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    isInvalid={formik.touched.username && !!formik.errors.username || !!loginErr}
-                  />
-                  <BootstrapForm.Control.Feedback type="invalid">
-                    {formik.errors.username || loginErr}
-                  </BootstrapForm.Control.Feedback>
-                </BootstrapForm.Group>
+          <Col md={6}>
+            <Card style={{ height: '100%', borderRadius: '0', border: 'none' }}>
+              <Card.Body className="p-4">
+                <h1 className="text-center mb-4">Войти</h1>
+                <form onSubmit={formik.handleSubmit}>
+                  <BootstrapForm.Group className="mb-3">
+                    <BootstrapForm.Control
+                      type="text"
+                      name="username"
+                      placeholder="Ник пользователя"
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      isInvalid={formik.touched.username && !!formik.errors.username || !!loginErr}
+                    />
+                    <BootstrapForm.Control.Feedback type="invalid">
+                      {formik.errors.username || loginErr}
+                    </BootstrapForm.Control.Feedback>
+                  </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="mb-3">
-                  <BootstrapForm.Control
-                    type="password"
-                    name="password"
-                    placeholder="Пароль"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    isInvalid={formik.touched.password && !!formik.errors.password || !!loginErr}
-                  />
-                  <BootstrapForm.Control.Feedback type="invalid">
-                    {formik.errors.password || loginErr}
-                  </BootstrapForm.Control.Feedback>
-                </BootstrapForm.Group>
+                  <BootstrapForm.Group className="mb-3">
+                    <BootstrapForm.Control
+                      type="password"
+                      name="password"
+                      placeholder="Пароль"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      isInvalid={formik.touched.password && !!formik.errors.password || !!loginErr}
+                    />
+                    <BootstrapForm.Control.Feedback type="invalid">
+                      {formik.errors.password || loginErr}
+                    </BootstrapForm.Control.Feedback>
+                  </BootstrapForm.Group>
 
-                <div className="d-grid">
-                  <Button variant="primary" type="submit" disabled={status === 'loading'}>
-                    {status === 'loading' ? 'Загрузка...' : 'Войти'}
-                  </Button>
-                </div>
-              </form>
-            </Card.Body>
+                  <div className="d-grid">
+                    <Button variant="primary" type="submit" disabled={status === 'loading'}>
+                      {status === 'loading' ? 'Загрузка...' : 'Войти'}
+                    </Button>
+                  </div>
+                </form>
+              </Card.Body>
 
-            <Card.Footer className="text-center p-3">
-              <span>Нет аккаунта? </span>
-              <Link to="/signup">Зарегистрироваться</Link>
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+              <Card.Footer className="text-center p-3">
+                <span>Нет аккаунта? </span>
+                <Link to="/signup">Зарегистрироваться</Link>
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 

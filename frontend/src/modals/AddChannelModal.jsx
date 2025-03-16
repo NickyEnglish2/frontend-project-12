@@ -48,7 +48,7 @@ const AddChannelModal = ({ show, onHide }) => {
   });
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>Добавить канал</Modal.Title>
       </Modal.Header>
