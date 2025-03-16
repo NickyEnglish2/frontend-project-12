@@ -1,8 +1,10 @@
 import * as Yup from 'yup';
 
-export default Yup.object().shape({
-  username: Yup.string()
-    .required('Обязательное поле'),
-  password: Yup.string()
-    .required('Обязательное поле'),
-});
+export default (t) => {
+  return Yup.object().shape({
+    username: Yup.string()
+      .required(t('validation.login.username.required')),
+    password: Yup.string()
+      .required(t('validation.login.password.required')),
+  });
+}

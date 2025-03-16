@@ -1,24 +1,28 @@
 import { useFormik } from 'formik';
-import { Button, Form as BootstrapForm, Container, Card, Row, Col, Image, Alert } from 'react-bootstrap';
+import { Button, Form as BootstrapForm, Container, Card, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { loginStart, loginSuccess, loginFailure } from '../slices/authSlice.js';
 import loginApi from '../utilities/loginAPI.js';
 import { useNavigate, Link } from 'react-router-dom';
 import loginImage from '../assets/avatar.jpg';
-import loginPage from '../validations/loginPage.js';
+import createLoginValidation from '../validations/loginPage.js';
 import Header from './Header.jsx';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { status, loginErr } = useSelector((state) => state.auth);
+
+  const loginValidationSchema = createLoginValidation(t);
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validationSchema: loginPage,
+    validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
       dispatch(loginStart());
       try {
@@ -26,7 +30,7 @@ const LoginPage = () => {
         dispatch(loginSuccess({ token: response.token, username: response.username }));
         navigate('/');
       } catch (err) {
-        dispatch(loginFailure('Неправильный логин или пароль'));
+        dispatch(loginFailure(t('errors.loginErr')));
         console.error(err.message);
       }
     },
@@ -52,13 +56,13 @@ const LoginPage = () => {
           <Col md={6}>
             <Card style={{ height: '100%', borderRadius: '0', border: 'none' }}>
               <Card.Body className="p-4">
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('loginPage.title')}</h1>
                 <form onSubmit={formik.handleSubmit}>
                   <BootstrapForm.Group className="mb-3">
                     <BootstrapForm.Control
                       type="text"
                       name="username"
-                      placeholder="Ник пользователя"
+                      placeholder={t('loginPage.placeholder.username')}
                       value={formik.values.username}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -73,7 +77,7 @@ const LoginPage = () => {
                     <BootstrapForm.Control
                       type="password"
                       name="password"
-                      placeholder="Пароль"
+                      placeholder={t('loginPage.placeholder.password')}
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -86,15 +90,15 @@ const LoginPage = () => {
 
                   <div className="d-grid">
                     <Button variant="primary" type="submit" disabled={status === 'loading'}>
-                      {status === 'loading' ? 'Загрузка...' : 'Войти'}
+                      {status === 'loading' ? t('loginPage.button.loading') : t('loginPage.button.enter')}
                     </Button>
                   </div>
                 </form>
               </Card.Body>
 
               <Card.Footer className="text-center p-3">
-                <span>Нет аккаунта? </span>
-                <Link to="/signup">Зарегистрироваться</Link>
+                <span>{t('loginPage.footer.noAccount')} </span>
+                <Link to="/signup">{t('loginPage.footer.signUp')}</Link>
               </Card.Footer>
             </Card>
           </Col>
