@@ -1,20 +1,23 @@
 import { Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
-const ConfirmDeleteModal = ({ show, onHide, onConfirm, ChannelName }) => {
+const ConfirmDeleteModal = ({ show, onHide, onConfirm, channelName }) => {
+  const { t } = useTranslation();
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Удаление канала</Modal.Title>
+        <Modal.Title>{t('confirmDeleteModal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Вы точно хотите удалить <strong>{ChannelName}</strong>?
+        {t('confirmDeleteModal.body', { channelName })}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-          Нет
+        {t('confirmDeleteModal.btnNo')}
         </Button>
         <Button variant="primary" onClick={onConfirm}>
-          Да
+        {t('confirmDeleteModal.btnYes')}
         </Button>
       </Modal.Footer>
     </Modal>

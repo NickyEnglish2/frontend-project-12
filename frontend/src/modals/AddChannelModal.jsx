@@ -3,6 +3,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { setCurrentChannel } from '../slices/channelsSlice';
 import addChannelApi from '../utilities/addChannelApi.js';
 
@@ -11,6 +12,7 @@ const AddChannelModal = ({ show, onHide }) => {
   const { channels } = useSelector((state) => state.channels);
   const { token } = useSelector((state) => state.auth);
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (show && inputRef.current) {
@@ -20,10 +22,10 @@ const AddChannelModal = ({ show, onHide }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(3, 'Не менее 3 символов')
-      .max(20, 'Не более 20 символов')
-      .required('Обязательное поле')
-      .test('unique', 'Канал уже существует', (value) => {
+      .min(3, t('addChannelModal.validation.min'))
+      .max(20, t('addChannelModal.validation.max'))
+      .required(t('addChannelModal.validation.required'))
+      .test('unique', t('addChannelModal.validation.unique'), (value) => {
         return !channels.some((channel) => channel.name === value);
       }),
   });
@@ -50,7 +52,7 @@ const AddChannelModal = ({ show, onHide }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('addChannelModal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -58,7 +60,7 @@ const AddChannelModal = ({ show, onHide }) => {
             <Form.Control
               type="text"
               name="name"
-              placeholder="Введите название канала"
+              placeholder={t('addChannelModal.placeholder')}
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -71,10 +73,10 @@ const AddChannelModal = ({ show, onHide }) => {
           </Form.Group>
           <div className="d-flex justify-content-end mt-3">
             <Button variant="secondary" onClick={onHide} className="me-2">
-              Отменить
+              {t('addChannelModal.cancelBtn')}
             </Button>
             <Button type="submit" variant="primary">
-              Добавить
+              {t('addChannelModal.submitBtn')}
             </Button>
           </div>
         </Form>

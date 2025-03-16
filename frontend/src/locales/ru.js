@@ -61,6 +61,36 @@ export default {
         messageCount_many: '{{count}} сообщений',
       },
     },
+    confirmDeleteModal: {
+      title: 'Удаление канала',
+      body: 'Вы точно хотите удалить канал {{channelName}}?',
+      btnYes: 'Да',
+      btnNo: 'Нет',
+    },
+    addChannelModal: {
+      validation: {
+        required: 'Обязательное поле',
+        min: 'Не менее 3 символов',
+        max: 'Не более 20 символов',
+        unique: 'Канал уже существует',
+      },
+      title: 'Добавить канал',
+      placeholder: 'Введите название канала',
+      submitBtn: 'Добавить',
+      cancelBtn: 'Отменить',
+    },
+    editChannelModal: {
+      validation: {
+        required: 'Обязательное поле',
+        min: 'Новое название не менее 3 символов',
+        max: 'Новое название не более 20 символов',
+        unique: 'Канал с таким именем уже существует',
+      },
+      title: 'Редактирование канала # {{channelName}}',
+      placeholder: 'Введите новое название канала',
+      cancelBtn: 'Отменить',
+      saveBtn: 'Сохранить',
+    },
     validation: {
       signUp: {
         username: {

@@ -3,6 +3,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import editChannelApi from '../utilities/editChannelApi';
 import { updateChannel } from '../slices/channelsSlice';
 
@@ -11,6 +12,7 @@ const EditChannelModal = ({ show, onHide, channel }) => {
   const { channels } = useSelector((state) => state.channels);
   const { token } = useSelector((state) => state.auth);
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (show && inputRef.current) {
@@ -20,10 +22,10 @@ const EditChannelModal = ({ show, onHide, channel }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(3, 'Новое название не менее 3 символов')
-      .max(20, 'Новое название не более 20 символов')
-      .required('Обязательное поле')
-      .test('unique', 'Канал с таким именем уже существует', (value) => {
+      .min(3, t('editChannelModal.validation.min'))
+      .max(20, t('editChannelModal.validation.max'))
+      .required(t('editChannelModal.validation.required'))
+      .test('unique', t('editChannelModal.validation.unique'), (value) => {
         return !channels.some((ch) => ch.name === value && ch.id !== channel.id);
       }),
   });
@@ -48,7 +50,7 @@ const EditChannelModal = ({ show, onHide, channel }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Редактирование канала # {channel?.name}</Modal.Title>
+        <Modal.Title>{t('editChannelModal.title', { channelName: channel?.name })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -56,7 +58,7 @@ const EditChannelModal = ({ show, onHide, channel }) => {
             <Form.Control
               type="text"
               name="name"
-              placeholder="Введите новое название канала"
+              placeholder={t('editChannelModal.placeholder')}
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -69,10 +71,10 @@ const EditChannelModal = ({ show, onHide, channel }) => {
           </Form.Group>
           <div className="d-flex justify-content-end mt-3">
             <Button variant="secondary" onClick={onHide} className="me-2">
-              Отменить
+              {t('editChannelModal.cancelBtn')}
             </Button>
             <Button type="submit" variant="primary">
-              Сохранить
+              {t('editChannelModal.saveBtn')}
             </Button>
           </div>
         </Form>
