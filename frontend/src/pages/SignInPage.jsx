@@ -2,19 +2,23 @@ import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginStart, loginSuccess } from '../slices/authSlice.js';
 import signInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 
 const SignInPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
+    dispatch(loginStart());
     try {
       const response = await axios.post('/api/v1/signup', {
         username: values.username,
         password: values.password,
       });
-      console.log(response.data);
+      dispatch(loginSuccess({ token: response.token, username: response.username }));
       navigate('/');
     } catch (err) {
       console.error('Ошибка регистрации:', err.response?.data?.message || err.message);
