@@ -2,14 +2,15 @@ import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { loginStart, loginSuccess } from '../slices/authSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginStart, loginSuccess, signUpFailure } from '../slices/authSlice.js';
 import signInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 
 const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { signUpErr } = useSelector((state) => state.auth);
 
   const handleSubmit = async (values) => {
     dispatch(loginStart());
@@ -21,7 +22,8 @@ const SignInPage = () => {
       dispatch(loginSuccess({ token: response.token, username: response.username }));
       navigate('/');
     } catch (err) {
-      console.error('Ошибка регистрации:', err.response?.data?.message || err.message);
+      dispatch(signUpFailure('Пользователь с таким ником уже существует'));
+      console.error('Ошибка регистрации:', err.message);
     }
   };
 
@@ -63,10 +65,10 @@ const SignInPage = () => {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    isInvalid={formik.touched.username && !!formik.errors.username}
+                    isInvalid={formik.touched.username && !!formik.errors.username || !!signUpErr}
                   />
                   <BootstrapForm.Control.Feedback type="invalid">
-                    {formik.errors.username}
+                    {formik.errors.username || signUpErr}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 

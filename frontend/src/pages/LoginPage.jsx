@@ -10,7 +10,7 @@ import loginPage from '../validations/loginPage.js';
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, errors } = useSelector((state) => state.auth);
+  const { status, loginErr } = useSelector((state) => state.auth);
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +25,8 @@ const LoginPage = () => {
         dispatch(loginSuccess({ token: response.token, username: response.username }));
         navigate('/');
       } catch (err) {
-        dispatch(loginFailure(err.message));
+        dispatch(loginFailure('Неправильный логин или пароль'));
+        console.error(err.message);
       }
     },
   });
@@ -49,7 +50,6 @@ const LoginPage = () => {
           <Card style={{ height: '100%', borderRadius: '0', border: 'none' }}>
             <Card.Body className="p-4">
               <h1 className="text-center mb-4">Войти</h1>
-              {errors && <Alert variant="danger">{errors}</Alert>}
               <form onSubmit={formik.handleSubmit}>
                 <BootstrapForm.Group className="mb-3">
                   <BootstrapForm.Control
@@ -59,10 +59,10 @@ const LoginPage = () => {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    isInvalid={formik.touched.username && !!formik.errors.username}
+                    isInvalid={formik.touched.username && !!formik.errors.username || !!loginErr}
                   />
                   <BootstrapForm.Control.Feedback type="invalid">
-                    {formik.errors.username}
+                    {formik.errors.username || loginErr}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
@@ -74,10 +74,10 @@ const LoginPage = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    isInvalid={formik.touched.password && !!formik.errors.password}
+                    isInvalid={formik.touched.password && !!formik.errors.password || !!loginErr}
                   />
                   <BootstrapForm.Control.Feedback type="invalid">
-                    {formik.errors.password}
+                    {formik.errors.password || loginErr}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
