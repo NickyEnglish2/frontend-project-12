@@ -3,14 +3,16 @@ import { Button, Form as BootstrapForm, Container, Card, Row, Col } from 'react-
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { loginStart, loginSuccess, signUpFailure } from '../slices/authSlice.js';
-import signInSchema from '../validations/signInSchema.js';
+import createSignInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 import Header from './Header.jsx';
 
 const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { status, signUpErr } = useSelector((state) => state.auth);
 
   const handleSubmit = async (values) => {
@@ -23,10 +25,12 @@ const SignInPage = () => {
       dispatch(loginSuccess({ token: response.token, username: response.username }));
       navigate('/');
     } catch (err) {
-      dispatch(signUpFailure('Пользователь с таким ником уже существует'));
+      dispatch(signUpFailure(t('errors.signUpErr')));
       console.error('Ошибка регистрации:', err.message);
     }
   };
+
+  const signUpSchema = createSignInSchema(t);
 
   const formik = useFormik({
     initialValues: {
@@ -34,7 +38,7 @@ const SignInPage = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: signInSchema,
+    validationSchema: signUpSchema,
     onSubmit: handleSubmit,
   });
 
@@ -57,14 +61,14 @@ const SignInPage = () => {
           <Col md={6} style={{ backgroundColor: '#f8f9fa' }}>
             <Card style={{ height: '100%', borderRadius: '0', border: 'none' }}>
               <Card.Body className="p-4">
-                <h1 className="text-center mb-4">Регистрация</h1>
+                <h1 className="text-center mb-4">{t('signUpPage.title')}</h1>
                 <form onSubmit={formik.handleSubmit}>
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>Имя пользователя</BootstrapForm.Label>
+                    <BootstrapForm.Label>{t('signUpPage.nameInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
                       type="text"
                       name="username"
-                      placeholder="Введите имя пользователя"
+                      placeholder={t('signUpPage.nameInput.placeholder')}
                       value={formik.values.username}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -76,11 +80,11 @@ const SignInPage = () => {
                   </BootstrapForm.Group>
 
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>Пароль</BootstrapForm.Label>
+                    <BootstrapForm.Label>{t('signUpPage.passwordInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
                       type="password"
                       name="password"
-                      placeholder="Введите пароль"
+                      placeholder={t('signUpPage.passwordInput.placeholder')}
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -92,11 +96,11 @@ const SignInPage = () => {
                   </BootstrapForm.Group>
 
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>Подтвердите пароль</BootstrapForm.Label>
+                    <BootstrapForm.Label>{t('signUpPage.confirmPasswordInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
                       type="password"
                       name="confirmPassword"
-                      placeholder="Подтвердите пароль"
+                      placeholder={t('signUpPage.confirmPasswordInput.placeholder')}
                       value={formik.values.confirmPassword}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -109,14 +113,14 @@ const SignInPage = () => {
 
                   <div className="d-grid">
                     <Button variant="primary" type="submit" disabled={status === 'loading'}>
-                      {status === 'loading' ? 'Загрузка...' : 'Зарегистрироваться'}
+                      {status === 'loading' ? t('signUpPage.button.loading') : t('signUpPage.button.signUp')}
                     </Button>
                   </div>
 
                   <Row className="mt-3">
                     <Col className="text-center">
                       <Button variant="secondary" onClick={() => navigate('/login')}>
-                        Назад
+                      {t('signUpPage.button.back')}
                       </Button>
                     </Col>
                   </Row>

@@ -1,15 +1,17 @@
 import * as Yup from 'yup';
 
-export default Yup.object().shape({
-  username: Yup.string()
-    .required('Обязательное поле')
-    .min(3, 'Не менее 3 символов')
-    .max(20, 'Не более 20 символов'),
-  password: Yup.string()
-    .required('Обязательное поле')
-    .min(6, 'Пароль не менее 6 символов')
-    .max(15, 'Пароль не более 15 символов'),
-  confirmPassword: Yup.string()
-    .required('Обязательное поле')
-    .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
-});
+export default (t) => {
+  return Yup.object().shape({
+    username: Yup.string()
+      .required(t('validation.signUp.username.required'))
+      .min(3, t('validation.signUp.username.min'))
+      .max(20, t('validation.signUp.username.max')),
+    password: Yup.string()
+      .required(t('validation.signUp.password.required'))
+      .min(6, t('validation.signUp.password.min'))
+      .max(15, t('validation.signUp.password.max')),
+    confirmPassword: Yup.string()
+      .required(t('validation.signUp.confirmPassword.required'))
+      .oneOf([Yup.ref('password'), null], t('validation.signUp.confirmPassword.oneOf')),
+  });
+};
