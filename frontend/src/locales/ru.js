@@ -121,5 +121,12 @@ export default {
       loginErr: 'Неправильный логин или пароль',
       signUpErr: 'Пользователь с таким ником уже существует',
     },
+    toasters: {
+      networkErr: 'Ошибка сети',
+      networkRestored: 'Сеть восстановлена',
+      newChannel: 'Канал создан',
+      editedChannel: 'Канал отредактирован',
+      deletedChannel: 'Канал удален',
+    },
   },
 };

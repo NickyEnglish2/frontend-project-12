@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
 import fetchChannels from '../utilities/fetchChannels.js';
 import sendMessageApi from '../utilities/sendMessageApi.js';
 import removeChannelApi from '../utilities/removeChannelApi.js';
@@ -88,22 +89,72 @@ const MainPage = () => {
 
       socket.on('newChannel', (payload) => {
         dispatch(addChannel(payload));
+        toast.success(t('toasters.newChannel'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
       });
 
       socket.on('removeChannel', (payload) => {
         dispatch(removeChannel(payload.id));
+        toast.error(t('toasters.deletedChannel'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
       });
 
       socket.on('renameChannel', (payload) => {
         dispatch(updateChannel(payload));
+        toast.warn(t('toasters.editedChannel'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
       });
 
       socket.on('connect_error', (err) => {
         console.error('Ошибка подключения:', err.message);
+        toast.warn(t('toasters.networkErr'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       });
 
       socket.on('reconnect', () => {
         console.log('Подключение восстановлено');
+        toast.success(t('toasters.networkRestored'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       });
     }
 
@@ -115,11 +166,12 @@ const MainPage = () => {
       socket.off('connect_error');
       socket.off('reconnect');
     };
-  }, [dispatch, token]);
+  }, [dispatch, token, t]);
 
   return (
     <>
       <Header showLogoutButton={true} />
+      <ToastContainer />
       <Container fluid style={{ height: 'calc(100vh - 56px)' }}>
         <Row className="h-100">
           <Col md={3} className="bg-light border-end p-3 d-flex flex-column">
