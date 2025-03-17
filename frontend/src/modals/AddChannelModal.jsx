@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { censorText } from '../utilities/censorText.js';
 import { setCurrentChannel } from '../slices/channelsSlice';
 import addChannelApi from '../utilities/addChannelApi.js';
 
@@ -36,8 +37,9 @@ const AddChannelModal = ({ show, onHide }) => {
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      const censoredName = censorText(values.name);
       try {
-        const newChannel = await addChannelApi(values.name, token);
+        const newChannel = await addChannelApi(censoredName, token);
 
         onHide();
         resetForm();

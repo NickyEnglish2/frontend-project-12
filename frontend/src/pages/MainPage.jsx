@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
+import { censorText } from '../utilities/censorText.js';
 import fetchChannels from '../utilities/fetchChannels.js';
 import sendMessageApi from '../utilities/sendMessageApi.js';
 import removeChannelApi from '../utilities/removeChannelApi.js';
@@ -72,7 +73,9 @@ const MainPage = () => {
     },
     onSubmit: (values, { resetForm }) => {
       if (values.message.trim()) {
-        dispatch(sendMessageApi({ body: values.message, channelId: currentChannelId, username }));
+        const filteredMessage = censorText(values.message);
+
+        dispatch(sendMessageApi({ body: filteredMessage, channelId: currentChannelId, username }));
         resetForm();
       }
     },

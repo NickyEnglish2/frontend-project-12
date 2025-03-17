@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { censorText } from '../utilities/censorText';
 import editChannelApi from '../utilities/editChannelApi';
 import { updateChannel } from '../slices/channelsSlice';
 
@@ -36,8 +37,9 @@ const EditChannelModal = ({ show, onHide, channel }) => {
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
+      const censoredNewName = censorText(values.name);
       try {
-        const editedChannel = await editChannelApi(channel.id, values.name, token);
+        const editedChannel = await editChannelApi(channel.id, censoredNewName, token);
         dispatch(updateChannel(editedChannel));
         onHide();
         resetForm();
