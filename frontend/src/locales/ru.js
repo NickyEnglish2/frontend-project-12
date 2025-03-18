@@ -3,7 +3,7 @@ export default {
     loginPage: {
       title: 'Войти',
       placeholder: {
-        username: 'Ник пользователя',
+        username: 'Ваш ник',
         password: 'Пароль',
       },
       button: {
@@ -48,7 +48,7 @@ export default {
       channels: 'Каналы',
       addChannelBtn: 'Добавить канал',
       dropDown: {
-        edit: 'Редактировать',
+        edit: 'Переименовать',
         delete: 'Удалить',
       },
       form: {
@@ -95,13 +95,13 @@ export default {
       signUp: {
         username: {
           required: 'Обязательное поле',
-          min: 'Не менее 3 символов',
-          max: 'Не более 20 символов',
+          min: 'От 3 до 20 символов',
+          max: 'От 3 до 20 символов',
         },
         password: {
           required: 'Обязательное поле',
-          min: 'Пароль не менее 6 символов',
-          max: 'Пароль не более 15 символов',
+          min: 'Не менее 6 символов',
+          max: 'Не более 15 символов',
         },
         confirmPassword: {
           required: 'Обязательное поле',
@@ -118,14 +118,14 @@ export default {
       },
     },
     errors: {
-      loginErr: 'Неправильный логин или пароль',
+      loginErr: 'Неверные имя пользователя или пароль',
       signUpErr: 'Пользователь с таким ником уже существует',
     },
     toasters: {
-      networkErr: 'Ошибка сети',
-      networkRestored: 'Сеть восстановлена',
+      networkErr: 'Ошибка соединения',
+      networkRestored: 'Соединение восстановлено',
       newChannel: 'Канал создан',
-      editedChannel: 'Канал отредактирован',
+      editedChannel: 'Канал переименован',
       deletedChannel: 'Канал удален',
     },
   },
