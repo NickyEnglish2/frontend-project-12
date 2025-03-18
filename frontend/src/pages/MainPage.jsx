@@ -267,6 +267,12 @@ const MainPage = () => {
                   value={formik.values.message}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      formik.handleSubmit();
+                    }
+                  }}
                   isInvalid={formik.touched.message && !!formik.errors.message}
                   required
                 />

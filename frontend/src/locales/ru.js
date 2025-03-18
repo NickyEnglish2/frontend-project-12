@@ -52,7 +52,7 @@ export default {
         delete: 'Удалить',
       },
       form: {
-        placeholder: 'Введите сообщение...',
+        placeholder: 'Новое сообщение',
         sendBtn: 'Отправить',
       },
       messages: {
