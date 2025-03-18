@@ -6,9 +6,16 @@ import { addRussianDictionary } from './utilities/censorText.js';
 
 function App() {
   const rollbarConfig = {
-    accessToken: '743b0215789b48bf9c556dc5aa87c9ce',
-    environment: 'testenv',
+    accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    environment: 'production',
   };
+
+  function TestError() {
+    const a = null;
+    return a.hello();
+  }
 
   addRussianDictionary('ru');
 
@@ -16,7 +23,7 @@ function App() {
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n} defaultNS={'translation'}>
-          <AppRouter />
+          <TestError />
         </I18nextProvider>
       </ErrorBoundary>
     </Provider>
