@@ -12,7 +12,7 @@ export default {
       },
       footer: {
         noAccount: 'Нет аккаунта?',
-        signUp: 'Зарегистрироваться',
+        signUp: 'Регистрация',
       },
     },
     signUpPage: {
