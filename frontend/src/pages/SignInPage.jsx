@@ -1,10 +1,10 @@
 import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { loginStart, loginSuccess, signUpFailure } from '../slices/authSlice.js';
+import signUpAPI from '../utilities/signUpAPI.js';
 import createSignInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 import Header from './Header.jsx';
@@ -15,21 +15,6 @@ const SignInPage = () => {
   const { t } = useTranslation();
   const { status, signUpErr } = useSelector((state) => state.auth);
 
-  const handleSubmit = async (values) => {
-    dispatch(loginStart());
-    try {
-      const response = await axios.post('/api/v1/signup', {
-        username: values.username,
-        password: values.password,
-      });
-      dispatch(loginSuccess({ token: response.token, username: response.username }));
-      navigate('/');
-    } catch (err) {
-      dispatch(signUpFailure(t('errors.signUpErr')));
-      console.error('Ошибка регистрации:', err.message);
-    }
-  };
-
   const signUpSchema = createSignInSchema(t);
 
   const formik = useFormik({
@@ -39,7 +24,17 @@ const SignInPage = () => {
       confirmPassword: '',
     },
     validationSchema: signUpSchema,
-    onSubmit: handleSubmit,
+    onSubmit: async (values) => {
+      dispatch(loginStart());
+      try {
+        const response = await signUpAPI(values);
+        dispatch(loginSuccess({ token: response.token, username: response.username }));
+        navigate('/');
+      } catch (err) {
+        dispatch(signUpFailure(t('errors.signUpErr')));
+        console.error('Ошибка регистрации:', err.message);
+      }
+    },
   });
 
   return (
