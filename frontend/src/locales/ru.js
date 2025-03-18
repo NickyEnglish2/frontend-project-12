@@ -2,9 +2,9 @@ export default {
   translation: {
     loginPage: {
       title: 'Войти',
-      placeholder: {
+      labels: {
         username: 'Ваш ник',
-        password: 'Пароль',
+        password: 'Пароль:',
       },
       button: {
         enter: 'Войти',

@@ -59,10 +59,11 @@ const LoginPage = () => {
                 <h1 className="text-center mb-4">{t('loginPage.title')}</h1>
                 <form onSubmit={formik.handleSubmit}>
                   <BootstrapForm.Group className="mb-3">
+                    <BootstrapForm.Label htmlFor="username">{t('loginPage.labels.username')}</BootstrapForm.Label>
                     <BootstrapForm.Control
+                      id="username"
                       type="text"
                       name="username"
-                      placeholder={t('loginPage.placeholder.username')}
                       value={formik.values.username}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -74,10 +75,11 @@ const LoginPage = () => {
                   </BootstrapForm.Group>
 
                   <BootstrapForm.Group className="mb-3">
+                    <BootstrapForm.Label htmlFor="password">{t('loginPage.labels.password')}</BootstrapForm.Label>
                     <BootstrapForm.Control
+                      id="password"
                       type="password"
                       name="password"
-                      placeholder={t('loginPage.placeholder.password')}
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
