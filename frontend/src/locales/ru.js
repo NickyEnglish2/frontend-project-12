@@ -22,7 +22,7 @@ export default {
         placeholder: 'Введите имя пользователя',
       },
       passwordInput: {
-        label: 'Пароль',
+        label: 'Пароль:',
         placeholder: 'Введите пароль',
       },
       confirmPasswordInput: {
@@ -119,7 +119,7 @@ export default {
     },
     errors: {
       loginErr: 'Неверные имя пользователя или пароль',
-      signUpErr: 'Пользователь с таким ником уже существует',
+      signUpErr: 'Такой пользователь уже существует',
     },
     toasters: {
       networkErr: 'Ошибка соединения',
