@@ -59,7 +59,7 @@ const AddChannelModal = ({ show, onHide }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
-            <Form.Label className="visually-hidden" htmlFor="newChannelInput"></Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="newChannelInput">Имя канала</Form.Label>
             <Form.Control
               id="newChannelInput"
               type="text"
