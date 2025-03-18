@@ -1,6 +1,6 @@
 import AppRouter from './AppRouter.jsx';
 import { I18nextProvider } from 'react-i18next';
-import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 import i18n from './i18n.js';
 import { addRussianDictionary } from './utilities/censorText.js';
 
@@ -15,13 +15,13 @@ function App() {
   addRussianDictionary('ru');
 
   return (
-    <RollbarProvider config={rollbarConfig}>
+    <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n} defaultNS={'translation'}>
           <AppRouter />
         </I18nextProvider>
       </ErrorBoundary>
-    </RollbarProvider>
+    </Provider>
   )
 }
 
