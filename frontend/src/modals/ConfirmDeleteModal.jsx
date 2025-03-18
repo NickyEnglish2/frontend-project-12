@@ -16,7 +16,7 @@ const ConfirmDeleteModal = ({ show, onHide, onConfirm, channelName }) => {
         <Button variant="secondary" onClick={onHide}>
         {t('confirmDeleteModal.btnNo')}
         </Button>
-        <Button variant="primary" onClick={onConfirm}>
+        <Button variant="danger" onClick={onConfirm}>
         {t('confirmDeleteModal.btnYes')}
         </Button>
       </Modal.Footer>
