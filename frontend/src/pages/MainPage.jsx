@@ -259,11 +259,10 @@ const MainPage = () => {
 
             <Form onSubmit={formik.handleSubmit} className="mt-auto">
               <Form.Group>
-                <Form.Label htmlFor="newMessage">{t('mainPage.form.label')}</Form.Label>
                 <Form.Control
-                  id="newMessage"
                   as="textarea"
                   name="message"
+                  placeholder={t('mainPage.form.placeholder')}
                   rows={2}
                   value={formik.values.message}
                   onChange={formik.handleChange}
@@ -276,6 +275,7 @@ const MainPage = () => {
                   }}
                   isInvalid={formik.touched.message && !!formik.errors.message}
                   required
+                  aria-label="Новое сообщение"
                 />
                 <Form.Control.Feedback type="invalid">
                   {formik.errors.message}
