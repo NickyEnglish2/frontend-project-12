@@ -6,7 +6,7 @@ import { addRussianDictionary } from './utilities/censorText.js';
 
 function App() {
   const rollbarConfig = {
-    accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+    accessToken: '90730c7a28654b2a96c2110fb4f7e001',
     captureUncaught: true,
     captureUnhandledRejections: true,
     environment: 'production',
