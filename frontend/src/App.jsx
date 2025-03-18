@@ -6,7 +6,7 @@ import { addRussianDictionary } from './utilities/censorText.js';
 
 function App() {
   const rollbarConfig = {
-    accessToken: '90730c7a28654b2a96c2110fb4f7e001',
+    accessToken: '743b0215789b48bf9c556dc5aa87c9ce',
     captureUncaught: true,
     captureUnhandledRejections: true,
     environment: 'production',
