@@ -259,11 +259,12 @@ const MainPage = () => {
 
             <Form onSubmit={formik.handleSubmit} className="mt-auto">
               <Form.Group>
+                <Form.Label htmlFor="newMessage">{t('mainPage.form.label')}</Form.Label>
                 <Form.Control
+                  id="newMessage"
                   as="textarea"
                   name="message"
                   rows={2}
-                  placeholder={t('mainPage.form.placeholder')}
                   value={formik.values.message}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
