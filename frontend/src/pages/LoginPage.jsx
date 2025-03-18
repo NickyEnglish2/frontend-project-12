@@ -102,7 +102,7 @@ const LoginPage = () => {
 
               <Card.Footer className="text-center p-3">
                 <span>
-                  {t('loginPage.footer.noAccount')} 
+                  {t('loginPage.footer.noAccount')}
                 </span>
                 <Link to="/signup">{t('loginPage.footer.signUp')}</Link>
               </Card.Footer>

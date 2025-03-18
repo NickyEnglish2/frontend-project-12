@@ -1,10 +1,12 @@
+/* eslint-disable object-curly-newline */
+
 import { useEffect, useState } from 'react';
 import { Button, ListGroup, Form, Row, Col, Container, Card, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { BiAddToQueue } from 'react-icons/bi';
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import { censorText } from '../utilities/censorText.js';
 import fetchChannels from '../utilities/fetchChannels.js';
@@ -48,7 +50,7 @@ const MainPage = () => {
         const messagesToDelete = messages.filter((msg) => msg.channelId === channelToDelete);
 
         await Promise.all(
-          messagesToDelete.map((msg) => removeMessageApi(msg.id, token))
+          messagesToDelete.map((msg) => removeMessageApi(msg.id, token)),
         );
 
         await removeChannelApi(channelToDelete, token);
@@ -202,14 +204,14 @@ const MainPage = () => {
                     <span># {channel.name}</span>
                     {channel.removable && (
                       <Dropdown onClick={(e) => e.stopPropagation()}>
-                        <Dropdown.Toggle 
+                        <Dropdown.Toggle
                           variant="link"
                           id="dropdown-channel-actions"
                           className="p-1 rounded bg-light border-0"
                           style={{
-                            backgroundColor: "#a4a4a4",
-                            borderRadius: "4px",
-                            padding: "4px 8px",
+                            backgroundColor: '#a4a4a4',
+                            borderRadius: '4px',
+                            padding: '4px 8px',
                           }}
                         >
                           <span className="visually-hidden">Управление каналом</span>

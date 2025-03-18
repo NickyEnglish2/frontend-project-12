@@ -33,4 +33,4 @@ export default [
       'import/no-extraneous-dependencies': false,
     },
   },
-]
+];

@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+
 import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -61,7 +63,7 @@ const SignInPage = () => {
                   <BootstrapForm.Group className="mb-3">
                     <BootstrapForm.Label htmlFor="username">{t('signUpPage.nameInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
-                      id='username'
+                      id="username"
                       type="text"
                       name="username"
                       placeholder={t('signUpPage.nameInput.placeholder')}
@@ -118,7 +120,7 @@ const SignInPage = () => {
                   <Row className="mt-3">
                     <Col className="text-center">
                       <Button variant="secondary" onClick={() => navigate('/login')}>
-                      {t('signUpPage.button.back')}
+                        {t('signUpPage.button.back')}
                       </Button>
                     </Col>
                   </Row>

@@ -11,5 +11,5 @@ export default createAsyncThunk(
       },
     });
     return response.data;
-  }
+  },
 );

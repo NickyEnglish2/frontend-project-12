@@ -19,7 +19,7 @@ function App() {
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
-        <I18nextProvider i18n={i18n} defaultNS='translation'>
+        <I18nextProvider i18n={i18n} defaultNS="translation">
           <AppRouter />
         </I18nextProvider>
       </ErrorBoundary>
