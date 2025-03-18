@@ -57,7 +57,9 @@ const EditChannelModal = ({ show, onHide, channel }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
+          <Form.Label className="visually-hidden" htmlFor="editChannelInput">Имя канала</Form.Label>
             <Form.Control
+              id="editChannelInput"
               type="text"
               name="name"
               placeholder={t('editChannelModal.placeholder')}
