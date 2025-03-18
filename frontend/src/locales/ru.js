@@ -128,5 +128,9 @@ export default {
       editedChannel: 'Канал переименован',
       deletedChannel: 'Канал удалён',
     },
+    spans: {
+      addChannelSpan: '+',
+      channelsActionsSpans: 'Управление каналом',
+    },
   },
 };
