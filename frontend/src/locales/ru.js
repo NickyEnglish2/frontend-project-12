@@ -126,7 +126,7 @@ export default {
       networkRestored: 'Соединение восстановлено',
       newChannel: 'Канал создан',
       editedChannel: 'Канал переименован',
-      deletedChannel: 'Канал удален',
+      deletedChannel: 'Канал удалён',
     },
   },
 };

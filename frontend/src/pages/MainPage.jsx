@@ -186,6 +186,7 @@ const MainPage = () => {
                 className="p-0"
                 title={t('mainPage.addChannelBtn')}
               >
+                <span className="visually-hidden">+</span>
                 <BiAddToQueue size={20} />
               </Button>
             </div>
@@ -212,6 +213,7 @@ const MainPage = () => {
                             padding: "4px 8px",
                           }}
                         >
+                          <span className="visually-hidden">Управление каналом</span>
                           <FaEllipsisV size={16} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
