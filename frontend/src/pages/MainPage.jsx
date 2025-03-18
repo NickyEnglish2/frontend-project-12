@@ -201,7 +201,9 @@ const MainPage = () => {
                   style={{ cursor: 'pointer' }}
                 >
                   <div className="d-flex justify-content-between align-items-center">
-                    <span># {channel.name}</span>
+                    <span>
+                      # {channel.name}
+                    </span>
                     {channel.removable && (
                       <Dropdown onClick={(e) => e.stopPropagation()}>
                         <Dropdown.Toggle
@@ -244,7 +246,8 @@ const MainPage = () => {
             <Card className="flex-grow-1 mb-3">
               <Card.Body className="d-flex flex-column">
                 <Card.Title>
-                  # {channels.find((ch) => ch.id === currentChannelId)?.name}{' '}
+                  # 
+                  {channels.find((ch) => ch.id === currentChannelId)?.name}{' '}
                   <small className="text-muted">
                     {formatMessageCount(currentMessages.length)}
                   </small>
@@ -252,7 +255,9 @@ const MainPage = () => {
                 <div className="overflow-auto flex-grow-1 mb-3">
                   {currentMessages.map((msg) => (
                     <div key={msg.id} className="mb-2">
-                      <strong>{msg.username}: </strong>
+                      <strong>
+                        {msg.username}: 
+                      </strong>
                       {msg.body}
                     </div>
                   ))}
