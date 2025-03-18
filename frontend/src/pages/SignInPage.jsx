@@ -59,8 +59,9 @@ const SignInPage = () => {
                 <h1 className="text-center mb-4">{t('signUpPage.title')}</h1>
                 <form onSubmit={formik.handleSubmit}>
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>{t('signUpPage.nameInput.label')}</BootstrapForm.Label>
+                    <BootstrapForm.Label htmlFor="username">{t('signUpPage.nameInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
+                      id='username'
                       type="text"
                       name="username"
                       placeholder={t('signUpPage.nameInput.placeholder')}
@@ -75,8 +76,9 @@ const SignInPage = () => {
                   </BootstrapForm.Group>
 
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>{t('signUpPage.passwordInput.label')}</BootstrapForm.Label>
+                    <BootstrapForm.Label htmlFor="password">{t('signUpPage.passwordInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
+                      id="password"
                       type="password"
                       name="password"
                       placeholder={t('signUpPage.passwordInput.placeholder')}
@@ -91,8 +93,9 @@ const SignInPage = () => {
                   </BootstrapForm.Group>
 
                   <BootstrapForm.Group className="mb-3">
-                    <BootstrapForm.Label>{t('signUpPage.confirmPasswordInput.label')}</BootstrapForm.Label>
+                    <BootstrapForm.Label htmlFor="confirmPassword">{t('signUpPage.confirmPasswordInput.label')}</BootstrapForm.Label>
                     <BootstrapForm.Control
+                      id="confirmPassword"
                       type="password"
                       name="confirmPassword"
                       placeholder={t('signUpPage.confirmPasswordInput.placeholder')}
