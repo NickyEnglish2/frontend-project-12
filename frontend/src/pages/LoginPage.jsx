@@ -83,10 +83,10 @@ const LoginPage = () => {
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      isInvalid={formik.touched.password && !!formik.errors.password || !!loginErr}
+                      isInvalid={formik.touched.password && !!formik.errors.password}
                     />
                     <BootstrapForm.Control.Feedback type="invalid">
-                      {formik.errors.password || loginErr}
+                      {formik.errors.password}
                     </BootstrapForm.Control.Feedback>
                   </BootstrapForm.Group>
 
