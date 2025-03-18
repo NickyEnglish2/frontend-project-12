@@ -12,18 +12,13 @@ function App() {
     environment: 'production',
   };
 
-  function TestError() {
-    const a = null;
-    return a.hello();
-  }
-
   addRussianDictionary('ru');
 
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n} defaultNS={'translation'}>
-          <TestError />
+          <AppRouter />
         </I18nextProvider>
       </ErrorBoundary>
     </Provider>
