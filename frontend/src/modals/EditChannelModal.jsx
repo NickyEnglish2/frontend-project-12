@@ -26,9 +26,7 @@ const EditChannelModal = ({ show, onHide, channel }) => {
       .min(3, t('editChannelModal.validation.min'))
       .max(20, t('editChannelModal.validation.max'))
       .required(t('editChannelModal.validation.required'))
-      .test('unique', t('editChannelModal.validation.unique'), (value) => {
-        return !channels.some((ch) => ch.name === value && ch.id !== channel.id);
-      }),
+      .test('unique', t('editChannelModal.validation.unique'), (value) => !channels.some((ch) => ch.name === value && ch.id !== channel.id)),
   });
 
   const formik = useFormik({
@@ -57,7 +55,7 @@ const EditChannelModal = ({ show, onHide, channel }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
-          <Form.Label className="visually-hidden" htmlFor="editChannelInput">Имя канала</Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="editChannelInput">Имя канала</Form.Label>
             <Form.Control
               id="editChannelInput"
               type="text"

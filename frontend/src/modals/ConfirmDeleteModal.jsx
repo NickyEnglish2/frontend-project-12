@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
@@ -14,10 +16,10 @@ const ConfirmDeleteModal = ({ show, onHide, onConfirm, channelName }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
-        {t('confirmDeleteModal.btnNo')}
+          {t('confirmDeleteModal.btnNo')}
         </Button>
         <Button variant="danger" onClick={onConfirm}>
-        {t('confirmDeleteModal.btnYes')}
+          {t('confirmDeleteModal.btnYes')}
         </Button>
       </Modal.Footer>
     </Modal>

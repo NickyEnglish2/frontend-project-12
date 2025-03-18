@@ -1,10 +1,12 @@
+/* eslint-disable object-curly-newline */
+
 import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, Link } from 'react-router-dom';
 import { loginStart, loginSuccess, loginFailure } from '../slices/authSlice.js';
 import loginApi from '../utilities/loginAPI.js';
-import { useNavigate, Link } from 'react-router-dom';
 import loginImage from '../assets/avatar.jpg';
 import createLoginValidation from '../validations/loginPage.js';
 import Header from './Header.jsx';
@@ -99,7 +101,9 @@ const LoginPage = () => {
               </Card.Body>
 
               <Card.Footer className="text-center p-3">
-                <span>{t('loginPage.footer.noAccount')} </span>
+                <span>
+                  {t('loginPage.footer.noAccount')} 
+                </span>
                 <Link to="/signup">{t('loginPage.footer.signUp')}</Link>
               </Card.Footer>
             </Card>

@@ -26,9 +26,7 @@ const AddChannelModal = ({ show, onHide }) => {
       .min(3, t('addChannelModal.validation.min'))
       .max(20, t('addChannelModal.validation.max'))
       .required(t('addChannelModal.validation.required'))
-      .test('unique', t('addChannelModal.validation.unique'), (value) => {
-        return !channels.some((channel) => channel.name === value);
-      }),
+      .test('unique', t('addChannelModal.validation.unique'), (value) => !channels.some((channel) => channel.name === value)),
   });
 
   const formik = useFormik({

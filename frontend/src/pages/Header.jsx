@@ -1,8 +1,10 @@
+/* eslint-disable object-curly-newline */
+
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../slices/authSlice';
 import { useTranslation } from 'react-i18next';
+import { logout } from '../slices/authSlice';
 
 const Header = ({ showLogoutButton }) => {
   const navigate = useNavigate();

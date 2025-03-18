@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice } from '@reduxjs/toolkit';
 import fetchChannels from '../utilities/fetchChannels';
 
@@ -51,6 +53,11 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setCurrentChannel, addChannel, removeChannel, updateChannel } = channelsSlice.actions;
+export const {
+  setCurrentChannel,
+  addChannel,
+  removeChannel,
+  updateChannel,
+} = channelsSlice.actions;
 
 export default channelsSlice.reducer;
