@@ -69,7 +69,7 @@ const LoginPage = () => {
                       value={formik.values.username}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      isInvalid={formik.touched.username && !!formik.errors.username || !!loginErr}
+                      isInvalid={(formik.touched.username && !!formik.errors.username) || !!loginErr}
                     />
                     <BootstrapForm.Control.Feedback type="invalid">
                       {formik.errors.username || loginErr}
@@ -104,6 +104,7 @@ const LoginPage = () => {
                 <span>
                   {t('loginPage.footer.noAccount')}
                 </span>
+                &nbsp;
                 <Link to="/signup">{t('loginPage.footer.signUp')}</Link>
               </Card.Footer>
             </Card>
