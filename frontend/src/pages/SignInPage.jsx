@@ -71,8 +71,8 @@ const SignInPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       isInvalid={
-                        (formik.touched.username && !!formik.errors.username) ||
-                        !!signUpErr
+                        (formik.touched.username && !!formik.errors.username)
+                        || !!signUpErr
                       }
                     />
                     <BootstrapForm.Control.Feedback type="invalid">
