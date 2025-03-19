@@ -41,9 +41,7 @@ const MainPage = () => {
 
   const currentMessages = messages.filter((msg) => msg.channelId === currentChannelId);
 
-  const formatMessageCount = (count) => {
-    return t('mainPage.messages.messageCount', { count });
-  };
+  const formatMessageCount = (count) => t('mainPage.messages.messageCount', { count });
 
   const handleDeleteChannel = async () => {
     if (channelToDelete) {
@@ -176,7 +174,7 @@ const MainPage = () => {
 
   return (
     <>
-      <Header showLogoutButton={true} />
+      <Header showLogoutButton />
       <ToastContainer />
       <Container fluid style={{ height: 'calc(100vh - 56px)' }}>
         <Row className="h-100">
