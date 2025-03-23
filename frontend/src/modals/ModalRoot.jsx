@@ -28,18 +28,22 @@ const ModalRoot = () => {
     case 'addChannel':
       return <SpecificModal show onHide={handleHide} />;
     case 'editChannel':
-      return <SpecificModal 
-        show 
-        onHide={handleHide} 
-        channel={modalProps.channel} 
-      />;
+      return (
+        <SpecificModal
+          show
+          onHide={handleHide}
+          channel={modalProps.channel}
+        />
+      );
     case 'deleteChannel':
-      return <SpecificModal 
-        show 
-        onHide={handleHide} 
-        channelName={modalProps.channelName}
-        onConfirm={modalProps.onConfirm}
-      />;
+      return (
+        <SpecificModal
+          show
+          onHide={handleHide}
+          channelName={modalProps.channelName}
+          onConfirm={modalProps.onConfirm}
+        />
+      );
     default:
       return null;
   }
