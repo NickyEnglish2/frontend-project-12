@@ -1,7 +1,7 @@
 import { Container, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PATHS } from '../routes/paths';
+import PATHS from '../routes/paths';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();

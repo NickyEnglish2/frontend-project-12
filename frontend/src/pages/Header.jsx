@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { logout } from '../slices/authSlice';
-import { PATHS } from '../routes/paths';
+import PATHS from '../routes/paths';
 
 const Header = ({ showLogoutButton }) => {
   const navigate = useNavigate();

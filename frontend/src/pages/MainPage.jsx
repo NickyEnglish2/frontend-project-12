@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/jsx-one-expression-per-line */
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button, ListGroup, Form, Row, Col, Container, Card, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
@@ -14,12 +14,11 @@ import fetchChannels from '../utilities/fetchChannels.js';
 import sendMessageApi from '../utilities/sendMessageApi.js';
 import removeChannelApi from '../utilities/removeChannelApi.js';
 import removeMessageApi from '../utilities/removeMessagesApi.js';
+import { showModal, hideModal } from '../slices/modalsSlice.js';
 import { setCurrentChannel, addChannel, removeChannel, updateChannel } from '../slices/channelsSlice.js';
 import { addMessage, removeMessage } from '../slices/messagesSlice.js';
 import socket from '../utilities/socket.js';
-import AddChannelModal from '../modals/AddChannelModal.jsx';
-import ConfirmDeleteModal from '../modals/ConfirmDeleteModal.jsx';
-import EditChannelModal from '../modals/EditChannelModal.jsx';
+import ModalRoot from '../modals/ModalRoot.jsx';
 import Header from './Header.jsx';
 
 const MainPage = () => {
@@ -29,12 +28,6 @@ const MainPage = () => {
   const { messages } = useSelector((state) => state.messages);
   const { token, username } = useSelector((state) => state.auth);
 
-  const [showAddChannelModal, setShowAddChannelModal] = useState(false);
-  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
-  const [showEditChannelModal, setShowEditChannelModal] = useState(false);
-  const [channelToDelete, setChannelToDelete] = useState(null);
-  const [channelToEdit, setChannelToEdit] = useState(null);
-
   useEffect(() => {
     dispatch(fetchChannels(token));
   }, [dispatch, token]);
@@ -43,29 +36,43 @@ const MainPage = () => {
 
   const formatMessageCount = (count) => t('mainPage.messages.messageCount', { count });
 
-  const handleDeleteChannel = async () => {
-    if (channelToDelete) {
-      try {
-        const messagesToDelete = messages.filter((msg) => msg.channelId === channelToDelete);
+  const handleDeleteChannel = async (channelId) => {
+    try {
+      const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
 
-        await Promise.all(
-          messagesToDelete.map((msg) => removeMessageApi(msg.id, token)),
-        );
+      await Promise.all(
+        messagesToDelete.map((msg) => removeMessageApi(msg.id, token)),
+      );
 
-        await removeChannelApi(channelToDelete, token);
-
-        dispatch(removeMessage(channelToDelete));
-
-        setShowConfirmDeleteModal(false);
-      } catch (err) {
-        console.error('Ошибка при удалении', err);
-      }
+      await removeChannelApi(channelId, token);
+      dispatch(removeMessage(channelId));
+      dispatch(hideModal());
+    } catch (err) {
+      console.error('Ошибка при удалении', err);
     }
   };
 
-  const handleEditChannel = (channel) => {
-    setChannelToEdit(channel);
-    setShowEditChannelModal(true);
+  const handleShowAddChannel = () => {
+    dispatch(showModal({ modalType: 'addChannel' }));
+  };
+
+  const handleShowEditChannel = (channel) => {
+    dispatch(showModal({
+      modalType: 'editChannel',
+      modalProps: { channel },
+    }));
+  };
+
+  const handleShowDeleteChannel = (channelId, channelName) => {
+    dispatch(showModal({
+      modalType: 'deleteChannel',
+      modalProps: {
+        channelName,
+        onConfirm: async () => {
+          await handleDeleteChannel(channelId);
+        }, 
+      },
+    }));
   };
 
   const formik = useFormik({
@@ -75,7 +82,6 @@ const MainPage = () => {
     onSubmit: (values, { resetForm }) => {
       if (values.message.trim()) {
         const filteredMessage = censorText(values.message);
-
         dispatch(sendMessageApi({ body: filteredMessage, channelId: currentChannelId, username }));
         resetForm();
       }
@@ -183,7 +189,7 @@ const MainPage = () => {
               <h5 className="mb-0">{t('mainPage.channels')}</h5>
               <Button
                 variant="link"
-                onClick={() => setShowAddChannelModal(true)}
+                onClick={handleShowAddChannel}
                 title={t('mainPage.addChannelBtn')}
               >
                 <span className="visually-hidden">+</span>
@@ -220,15 +226,12 @@ const MainPage = () => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item
-                            onClick={() => handleEditChannel(channel)}
+                            onClick={() => handleShowEditChannel(channel)}
                           >
                             {t('mainPage.dropDown.edit')}
                           </Dropdown.Item>
                           <Dropdown.Item
-                            onClick={() => {
-                              setChannelToDelete(channel.id);
-                              setShowConfirmDeleteModal(true);
-                            }}
+                            onClick={() => handleShowDeleteChannel(channel.id, channel.name)}
                           >
                             {t('mainPage.dropDown.delete')}
                           </Dropdown.Item>
@@ -292,23 +295,7 @@ const MainPage = () => {
           </Col>
         </Row>
 
-        <AddChannelModal
-          show={showAddChannelModal}
-          onHide={() => setShowAddChannelModal(false)}
-        />
-
-        <ConfirmDeleteModal
-          show={showConfirmDeleteModal}
-          onHide={() => setShowConfirmDeleteModal(false)}
-          onConfirm={handleDeleteChannel}
-          channelName={channels.find((ch) => ch.id === channelToDelete)?.name || ''}
-        />
-
-        <EditChannelModal
-          show={showEditChannelModal}
-          onHide={() => setShowEditChannelModal(false)}
-          channel={channelToEdit}
-        />
+        <ModalRoot />
       </Container>
     </>
   );

@@ -10,7 +10,7 @@ import signUpAPI from '../utilities/signUpAPI.js';
 import createSignInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 import Header from './Header.jsx';
-import { PATHS } from '../routes/paths.js';
+import PATHS from '../routes/paths.js';
 
 const SignInPage = () => {
   const dispatch = useDispatch();

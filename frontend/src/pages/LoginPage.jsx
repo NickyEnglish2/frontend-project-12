@@ -10,7 +10,7 @@ import loginApi from '../utilities/loginAPI.js';
 import loginImage from '../assets/avatar.jpg';
 import createLoginValidation from '../validations/loginPage.js';
 import Header from './Header.jsx';
-import { PATHS } from '../routes/paths.js';
+import PATHS from '../routes/paths.js';
 
 const LoginPage = () => {
   const dispatch = useDispatch();

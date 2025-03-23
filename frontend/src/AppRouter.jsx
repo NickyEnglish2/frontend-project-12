@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFound.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import { logout } from './slices/authSlice.js';
-import { PATHS } from './routes/paths.js';
+import PATHS from './routes/paths.js';
 
 const AppRouter = () => {
   const dispatch = useDispatch();

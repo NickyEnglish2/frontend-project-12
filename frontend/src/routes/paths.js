@@ -1,4 +1,4 @@
-export const PATHS = {
+export default {
   MAIN: '/',
   LOGIN: '/login',
   SIGNUP: '/signup',
