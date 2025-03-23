@@ -10,6 +10,7 @@ import loginApi from '../utilities/loginAPI.js';
 import loginImage from '../assets/avatar.jpg';
 import createLoginValidation from '../validations/loginPage.js';
 import Header from './Header.jsx';
+import { PATHS } from '../routes/paths.js';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const LoginPage = () => {
       try {
         const response = await loginApi(values);
         dispatch(loginSuccess({ token: response.token, username: response.username }));
-        navigate('/');
+        navigate(PATHS.MAIN);
       } catch (err) {
         dispatch(loginFailure(t('errors.loginErr')));
         console.error(err.message);
@@ -108,7 +109,7 @@ const LoginPage = () => {
                   {t('loginPage.footer.noAccount')}
                 </span>
                 &nbsp;
-                <Link to="/signup">{t('loginPage.footer.signUp')}</Link>
+                <Link to={PATHS.SIGNUP}>{t('loginPage.footer.signUp')}</Link>
               </Card.Footer>
             </Card>
           </Col>

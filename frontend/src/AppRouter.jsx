@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFound.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import { logout } from './slices/authSlice.js';
+import { PATHS } from './routes/paths.js';
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,15 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route
-        path="/"
+        path={PATHS.MAIN}
         element={isAuthenticated ? <MainPage /> : <Navigate to="/login" />}
       />
       <Route
-        path="/login"
+        path={PATHS.LOGIN}
         element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}
       />
       <Route
-        path="/signup"
+        path={PATHS.SIGNUP}
         element={!isAuthenticated ? <SignInPage /> : <Navigate to="/" />}
       />
       <Route path="*" element={<NotFoundPage />} />

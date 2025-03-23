@@ -10,6 +10,7 @@ import signUpAPI from '../utilities/signUpAPI.js';
 import createSignInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 import Header from './Header.jsx';
+import { PATHS } from '../routes/paths.js';
 
 const SignInPage = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const SignInPage = () => {
       try {
         const response = await signUpAPI(values);
         dispatch(loginSuccess({ token: response.token, username: response.username }));
-        navigate('/');
+        navigate(PATHS.MAIN);
       } catch (err) {
         dispatch(signUpFailure(t('errors.signUpErr')));
         console.error('Ошибка регистрации:', err.message);
@@ -122,7 +123,7 @@ const SignInPage = () => {
 
                   <Row className="mt-3">
                     <Col className="text-center">
-                      <Button variant="secondary" onClick={() => navigate('/login')}>
+                      <Button variant="secondary" onClick={() => navigate(PATHS.LOGIN)}>
                         {t('signUpPage.button.back')}
                       </Button>
                     </Col>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { logout } from '../slices/authSlice';
+import { PATHS } from '../routes/paths';
 
 const Header = ({ showLogoutButton }) => {
   const navigate = useNavigate();
@@ -13,14 +14,14 @@ const Header = ({ showLogoutButton }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate(PATHS.LOGIN);
   };
 
   return (
     <Navbar bg="light" expand="lg" className="shadow-sm">
       <Container>
         <Navbar.Brand
-          href="/"
+          href={PATHS.MAIN}
           style={{ cursor: 'pointer', color: 'black', fontWeight: 'bold' }}
         >
           Hexlet Chat
