@@ -70,7 +70,7 @@ const MainPage = () => {
         channelName,
         onConfirm: async () => {
           await handleDeleteChannel(channelId);
-        }, 
+        },
       },
     }));
   };
