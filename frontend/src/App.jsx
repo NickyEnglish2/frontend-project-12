@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import AppRouter from './AppRouter.jsx';
 import i18n from './i18n.js';
-import socket from './utilities/socket.js';
+import createSocket from './utilities/socket.js';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, updateChannel } from './slices/channelsSlice.js';
 import { addRussianDictionary } from './utilities/censorText.js';
@@ -25,14 +25,15 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      socket.auth = { token };
-      socket.connect();
+      const socketInstance = createSocket();
+      socketInstance.auth = { token };
+      socketInstance.connect();
 
-      socket.on('newMessage', (payload) => {
+      socketInstance.on('newMessage', (payload) => {
         dispatch(addMessage(payload));
       });
 
-      socket.on('newChannel', (payload) => {
+      socketInstance.on('newChannel', (payload) => {
         dispatch(addChannel(payload));
         toast.success(i18n.t('toasters.newChannel'), {
           position: 'top-right',
@@ -46,7 +47,7 @@ function App() {
         });
       });
 
-      socket.on('removeChannel', (payload) => {
+      socketInstance.on('removeChannel', (payload) => {
         dispatch(removeChannel(payload.id));
         toast.error(i18n.t('toasters.deletedChannel'), {
           position: 'top-right',
@@ -60,7 +61,7 @@ function App() {
         });
       });
 
-      socket.on('renameChannel', (payload) => {
+      socketInstance.on('renameChannel', (payload) => {
         dispatch(updateChannel(payload));
         toast.warn(i18n.t('toasters.editedChannel'), {
           position: 'top-right',
@@ -74,7 +75,7 @@ function App() {
         });
       });
 
-      socket.on('connect_error', (err) => {
+      socketInstance.on('connect_error', (err) => {
         console.error('Ошибка подключения:', err.message);
         toast.warn(i18n.t('toasters.networkErr'), {
           position: 'top-right',
@@ -88,7 +89,7 @@ function App() {
         });
       });
 
-      socket.on('reconnect', () => {
+      socketInstance.on('reconnect', () => {
         console.log('Подключение восстановлено');
         toast.success(i18n.t('toasters.networkRestored'), {
           position: 'top-right',
@@ -103,13 +104,13 @@ function App() {
       });
 
       return () => {
-        socket.off('newMessage');
-        socket.off('newChannel');
-        socket.off('removeChannel');
-        socket.off('renameChannel');
-        socket.off('connect_error');
-        socket.off('reconnect');
-        socket.disconnect();
+        socketInstance.off('newMessage');
+        socketInstance.off('newChannel');
+        socketInstance.off('removeChannel');
+        socketInstance.off('renameChannel');
+        socketInstance.off('connect_error');
+        socketInstance.off('reconnect');
+        socketInstance.disconnect();
       };
     }
   }, [dispatch, token]);
