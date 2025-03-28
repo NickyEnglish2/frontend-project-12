@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import MainPage from './pages/MainPage.jsx';
+import MainPage from './pages/MainPage/MainPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFound.jsx';
 import SignInPage from './pages/SignInPage.jsx';
