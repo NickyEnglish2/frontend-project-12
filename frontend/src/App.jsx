@@ -25,7 +25,7 @@ function App() {
 
   useEffect(() => {
     if (!token) return undefined;
-    
+
     const socketInstance = createSocket();
     socketInstance.auth = { token };
     socketInstance.connect();
