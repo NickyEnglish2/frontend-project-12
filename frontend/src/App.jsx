@@ -25,95 +25,94 @@ function App() {
 
   useEffect(() => {
     if (!token) return undefined;
-    if (token) {
-      const socketInstance = createSocket();
-      socketInstance.auth = { token };
-      socketInstance.connect();
+    
+    const socketInstance = createSocket();
+    socketInstance.auth = { token };
+    socketInstance.connect();
 
-      socketInstance.on('newMessage', (payload) => {
-        dispatch(addMessage(payload));
+    socketInstance.on('newMessage', (payload) => {
+      dispatch(addMessage(payload));
+    });
+
+    socketInstance.on('newChannel', (payload) => {
+      dispatch(addChannel(payload));
+      toast.success(i18n.t('toasters.newChannel'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
       });
+    });
 
-      socketInstance.on('newChannel', (payload) => {
-        dispatch(addChannel(payload));
-        toast.success(i18n.t('toasters.newChannel'), {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        });
+    socketInstance.on('removeChannel', (payload) => {
+      dispatch(removeChannel(payload.id));
+      toast.error(i18n.t('toasters.deletedChannel'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
       });
+    });
 
-      socketInstance.on('removeChannel', (payload) => {
-        dispatch(removeChannel(payload.id));
-        toast.error(i18n.t('toasters.deletedChannel'), {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        });
+    socketInstance.on('renameChannel', (payload) => {
+      dispatch(updateChannel(payload));
+      toast.warn(i18n.t('toasters.editedChannel'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
       });
+    });
 
-      socketInstance.on('renameChannel', (payload) => {
-        dispatch(updateChannel(payload));
-        toast.warn(i18n.t('toasters.editedChannel'), {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-        });
+    socketInstance.on('connect_error', (err) => {
+      console.error('Ошибка подключения:', err.message);
+      toast.warn(i18n.t('toasters.networkErr'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
       });
+    });
 
-      socketInstance.on('connect_error', (err) => {
-        console.error('Ошибка подключения:', err.message);
-        toast.warn(i18n.t('toasters.networkErr'), {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+    socketInstance.on('reconnect', () => {
+      console.log('Подключение восстановлено');
+      toast.success(i18n.t('toasters.networkRestored'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
       });
+    });
 
-      socketInstance.on('reconnect', () => {
-        console.log('Подключение восстановлено');
-        toast.success(i18n.t('toasters.networkRestored'), {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-      });
-
-      return () => {
-        socketInstance.off('newMessage');
-        socketInstance.off('newChannel');
-        socketInstance.off('removeChannel');
-        socketInstance.off('renameChannel');
-        socketInstance.off('connect_error');
-        socketInstance.off('reconnect');
-        socketInstance.disconnect();
-      };
-    }
+    return () => {
+      socketInstance.off('newMessage');
+      socketInstance.off('newChannel');
+      socketInstance.off('removeChannel');
+      socketInstance.off('renameChannel');
+      socketInstance.off('connect_error');
+      socketInstance.off('reconnect');
+      socketInstance.disconnect();
+    };
   }, [dispatch, token]);
 
   addRussianDictionary('ru');
