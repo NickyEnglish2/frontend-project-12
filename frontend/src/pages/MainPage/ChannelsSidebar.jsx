@@ -101,7 +101,9 @@ const ChannelsSidebar = () => {
                     <Dropdown.Item onClick={() => handleShowEditChannel(channel)}>
                       {t('mainPage.dropDown.edit')}
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleShowDeleteChannel(channel.id, channel.name)}>
+                    <Dropdown.Item
+                      onClick={() => handleShowDeleteChannel(channel.id, channel.name)}
+                    >
                       {t('mainPage.dropDown.delete')}
                     </Dropdown.Item>
                   </Dropdown.Menu>
