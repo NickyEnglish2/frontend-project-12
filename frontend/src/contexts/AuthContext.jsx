@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useCallback,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, logout } from '../slices/authSlice';
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
   const dispatch = useDispatch();
 
-  const logIn = (userData) => {
+  const logIn = useCallback((userData) => {
     const { token: userToken, username: userName } = userData;
     localStorage.setItem('token', userToken);
     localStorage.setItem('username', userName);
@@ -26,16 +27,16 @@ export const AuthProvider = ({ children }) => {
     setUsername(userName);
     setIsAuthenticated(true);
     dispatch(loginSuccess(userData));
-  };
+  }, [dispatch]);
 
-  const logOut = () => {
+  const logOut = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     setToken(null);
     setUsername(null);
     setIsAuthenticated(false);
     dispatch(logout());
-  };
+  }, [dispatch]);
 
   // Синхронизация состояния контекста при загрузке
   useEffect(() => {
