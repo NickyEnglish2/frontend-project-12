@@ -8,9 +8,8 @@ import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from 'react-icons/fa';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
 import { showModal, hideModal } from '../../slices/modalsSlice.js';
-import removeChannelApi from '../../utilities/removeChannelApi.js';
-import removeMessageApi from '../../utilities/removeMessagesApi.js';
-import { removeMessage } from '../../slices/messagesSlice.js';
+import { removeChannel, removeMessage } from '../../utilities/index';
+import { removeMessageRedux } from '../../slices/messagesSlice.js';
 
 const ChannelsSidebar = () => {
   const dispatch = useDispatch();
@@ -24,11 +23,11 @@ const ChannelsSidebar = () => {
       const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
 
       await Promise.all(
-        messagesToDelete.map((msg) => removeMessageApi(msg.id, token)),
+        messagesToDelete.map((msg) => removeMessage(msg.id, token)),
       );
 
-      await removeChannelApi(channelId, token);
-      dispatch(removeMessage(channelId));
+      await removeChannel(channelId, token);
+      dispatch(removeMessageRedux(channelId));
       dispatch(hideModal());
     } catch (err) {
       console.error('Ошибка при удалении', err);

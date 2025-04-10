@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import { createSlice } from '@reduxjs/toolkit';
-import fetchChannels from '../utilities/fetchChannels';
+import { fetchChannels } from '../utilities/index';
 
 const initialState = {
   channels: [],

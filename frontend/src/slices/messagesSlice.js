@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import { createSlice } from '@reduxjs/toolkit';
-import sendMessageApi from '../utilities/sendMessageApi.js';
+import { sendMessage } from '../utilities/index';
 
 const initialState = {
   messages: [],
@@ -16,26 +16,26 @@ const messagesSlice = createSlice({
     addMessage(state, action) {
       state.messages.push(action.payload);
     },
-    removeMessage(state, action) {
+    removeMessageRedux(state, action) {
       state.messages = state.messages.filter((msg) => msg.channelId !== action.payload);
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(sendMessageApi.pending, (state) => {
+      .addCase(sendMessage.pending, (state) => {
         state.status = true;
         state.errors = null;
       })
-      .addCase(sendMessageApi.fulfilled, (state) => {
+      .addCase(sendMessage.fulfilled, (state) => {
         state.status = 'success';
       })
-      .addCase(sendMessageApi.rejected, (state, action) => {
+      .addCase(sendMessage.rejected, (state, action) => {
         state.status = 'failed';
         state.errors = action.error.message;
       });
   },
 });
 
-export const { addMessage, removeMessage } = messagesSlice.actions;
+export const { addMessage, removeMessageRedux } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

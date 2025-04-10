@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import fetchChannels from '../../utilities/fetchChannels.js';
+import { fetchChannels } from '../../utilities/index';
 import ModalRoot from '../../modals/ModalRoot.jsx';
 import Header from '../Header.jsx';
 import ChannelsSidebar from './ChannelsSidebar.jsx';

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginStart, loginSuccess, loginFailure } from '../slices/authSlice.js';
-import loginApi from '../utilities/loginAPI.js';
+import { loginApi } from '../utilities/index';
 import loginImage from '../assets/avatar.jpg';
 import createLoginValidation from '../validations/loginPage.js';
 import Header from './Header.jsx';

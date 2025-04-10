@@ -7,10 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import AppRouter from './AppRouter.jsx';
 import i18n from './i18n.js';
-import createSocket from './utilities/socket.js';
+import { createSocket, addRussianDictionary } from './utilities/index.js';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, updateChannel } from './slices/channelsSlice.js';
-import { addRussianDictionary } from './utilities/censorText.js';
 
 function App() {
   const dispatch = useDispatch();

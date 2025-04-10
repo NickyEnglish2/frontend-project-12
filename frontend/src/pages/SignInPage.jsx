@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { loginStart, loginSuccess, signUpFailure } from '../slices/authSlice.js';
-import signUpAPI from '../utilities/signUpAPI.js';
+import { signUpApi } from '../utilities/index';
 import createSignInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
 import Header from './Header.jsx';
@@ -30,7 +30,7 @@ const SignInPage = () => {
     onSubmit: async (values) => {
       dispatch(loginStart());
       try {
-        const response = await signUpAPI(values);
+        const response = await signUpApi(values);
         dispatch(loginSuccess({ token: response.token, username: response.username }));
         navigate(PATHS.MAIN);
       } catch (err) {

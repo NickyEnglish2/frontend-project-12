@@ -5,8 +5,7 @@ import { Card, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { censorText } from '../../utilities/censorText.js';
-import sendMessageApi from '../../utilities/sendMessageApi.js';
+import { censorText, sendMessage } from '../../utilities/index';
 
 const ChatArea = () => {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ const ChatArea = () => {
     onSubmit: (values, { resetForm }) => {
       if (values.message.trim()) {
         const filteredMessage = censorText(values.message);
-        dispatch(sendMessageApi({ body: filteredMessage, channelId: currentChannelId, username }));
+        dispatch(sendMessage({ body: filteredMessage, channelId: currentChannelId, username }));
         resetForm();
       }
     },
