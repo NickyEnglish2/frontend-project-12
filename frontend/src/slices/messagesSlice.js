@@ -2,7 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage } from '../utilities/index';
-import { removeChannelAsync } from '../slices/channelsSlice.js';
+import { removeChannelAsync } from './channelsSlice.js';
 
 const initialState = {
   messages: [],
