@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuth } from './AuthContext';
 import {
@@ -21,35 +21,25 @@ export const ApiProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   const fetchChannels = () => dispatch(fetchChannelsApi(token));
-  
-  const addChannel = async (name) => {
-    return addChannelApi(name, token);
-  };
-  
-  const removeChannel = async (channelId) => {
-    return removeChannelApi(channelId, token);
-  };
-  
-  const editChannel = async (channelId, name) => {
-    return editChannelApi(channelId, name, token);
-  };
-  
-  const sendMessage = async (message) => {
-    return sendMessageApi(message, token);
-  };
-  
-  const removeMessage = async (messageId) => {
-    return removeMessageApi(messageId, token);
-  };
 
-  const value = {
+  const addChannel = async (name) => addChannelApi(name, token);
+
+  const removeChannel = async (channelId) => removeChannelApi(channelId, token);
+  
+  const editChannel = async (channelId, name) => editChannelApi(channelId, name, token);
+
+  const sendMessage = async (message) => sendMessageApi(message, token);
+
+  const removeMessage = async (messageId) => removeMessageApi(messageId, token);
+
+  const value = useMemo(() => ({
     fetchChannels,
     addChannel,
     removeChannel,
     editChannel,
     sendMessage,
     removeMessage,
-  };
+  }), [fetchChannels, addChannel, removeChannel, editChannel, sendMessage, removeMessage]);
 
   return (
     <ApiContext.Provider value={value}>

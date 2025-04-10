@@ -1,4 +1,10 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, logout } from '../slices/authSlice';
 
@@ -35,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
-    
+
     if (storedToken && storedUsername) {
       setToken(storedToken);
       setUsername(storedUsername);
@@ -44,13 +50,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, [dispatch]);
 
-  const value = {
+  const value = useMemo(() => ({
     token,
     username,
     isAuthenticated,
     logIn,
-    logOut
-  };
+    logOut,
+  }), [token, username, isAuthenticated]);
 
   return (
     <AuthContext.Provider value={value}>
