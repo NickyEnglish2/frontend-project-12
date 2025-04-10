@@ -2,18 +2,17 @@
 
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { logout } from '../slices/authSlice';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import PATHS from '../routes/paths';
 
 const Header = ({ showLogoutButton }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { logOut } = useAuth();
 
   const handleLogout = () => {
-    dispatch(logout());
+    logOut();
     navigate(PATHS.LOGIN);
   };
 

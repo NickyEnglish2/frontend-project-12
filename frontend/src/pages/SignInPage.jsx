@@ -1,11 +1,11 @@
 /* eslint-disable object-curly-newline */
 
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { loginStart, loginSuccess, signUpFailure } from '../slices/authSlice.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import { signUpApi } from '../utilities/index';
 import createSignInSchema from '../validations/signInSchema.js';
 import signInImage from '../assets/avatar_1.jpg';
@@ -13,10 +13,11 @@ import Header from './Header.jsx';
 import PATHS from '../routes/paths.js';
 
 const SignInPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { status, signUpErr } = useSelector((state) => state.auth);
+  const { logIn } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [signUpError, setSignUpError] = useState(null);
 
   const signUpSchema = createSignInSchema(t);
 
@@ -28,14 +29,17 @@ const SignInPage = () => {
     },
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
-      dispatch(loginStart());
+      setIsLoading(true);
+      setSignUpError(null);
       try {
         const response = await signUpApi(values);
-        dispatch(loginSuccess({ token: response.token, username: response.username }));
+        logIn({ token: response.token, username: response.username });
         navigate(PATHS.MAIN);
       } catch (err) {
-        dispatch(signUpFailure(t('errors.signUpErr')));
+        setSignUpError(t('errors.signUpErr'));
         console.error('Ошибка регистрации:', err.message);
+      } finally {
+        setIsLoading(false);
       }
     },
   });
@@ -73,11 +77,11 @@ const SignInPage = () => {
                       onBlur={formik.handleBlur}
                       isInvalid={
                         (formik.touched.username && !!formik.errors.username)
-                        || !!signUpErr
+                        || !!signUpError
                       }
                     />
                     <BootstrapForm.Control.Feedback type="invalid">
-                      {formik.errors.username || signUpErr}
+                      {formik.errors.username || signUpError}
                     </BootstrapForm.Control.Feedback>
                   </BootstrapForm.Group>
 
@@ -116,8 +120,8 @@ const SignInPage = () => {
                   </BootstrapForm.Group>
 
                   <div className="d-grid">
-                    <Button variant="primary" type="submit" disabled={status === 'loading'}>
-                      {status === 'loading' ? t('signUpPage.button.loading') : t('signUpPage.button.signUp')}
+                    <Button variant="primary" type="submit" disabled={isLoading}>
+                      {isLoading ? t('signUpPage.button.loading') : t('signUpPage.button.signUp')}
                     </Button>
                   </div>
 

@@ -5,6 +5,8 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { AuthProvider } from './contexts/AuthContext.jsx';
+import { ApiProvider } from './contexts/ApiContext.jsx';
 import AppRouter from './AppRouter.jsx';
 import i18n from './i18n.js';
 import { createSocket, addRussianDictionary } from './utilities/index.js';
@@ -88,7 +90,11 @@ function App() {
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n} defaultNS="translation">
-          <AppRouter />
+          <AuthProvider>
+            <ApiProvider>
+              <AppRouter />
+            </ApiProvider>
+          </AuthProvider>
         </I18nextProvider>
       </ErrorBoundary>
     </Provider>

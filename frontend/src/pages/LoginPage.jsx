@@ -1,11 +1,11 @@
 /* eslint-disable object-curly-newline */
 
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { Button, Form as BootstrapForm, Container, Card, Row, Col, Image } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginStart, loginSuccess, loginFailure } from '../slices/authSlice.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import { loginApi } from '../utilities/index';
 import loginImage from '../assets/avatar.jpg';
 import createLoginValidation from '../validations/loginPage.js';
@@ -13,10 +13,11 @@ import Header from './Header.jsx';
 import PATHS from '../routes/paths.js';
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { status, loginErr } = useSelector((state) => state.auth);
+  const { logIn } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
   const loginValidationSchema = createLoginValidation(t);
 
@@ -27,14 +28,17 @@ const LoginPage = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      dispatch(loginStart());
+      setIsLoading(true);
+      setLoginError(null);
       try {
         const response = await loginApi(values);
-        dispatch(loginSuccess({ token: response.token, username: response.username }));
+        logIn({ token: response.token, username: response.username });
         navigate(PATHS.MAIN);
       } catch (err) {
-        dispatch(loginFailure(t('errors.loginErr')));
+        setLoginError(t('errors.loginErr'));
         console.error(err.message);
+      } finally {
+        setIsLoading(false);
       }
     },
   });
@@ -72,11 +76,11 @@ const LoginPage = () => {
                       onBlur={formik.handleBlur}
                       isInvalid={
                         (formik.touched.username && !!formik.errors.username)
-                        || !!loginErr
+                        || !!loginError
                       }
                     />
                     <BootstrapForm.Control.Feedback type="invalid">
-                      {formik.errors.username || loginErr}
+                      {formik.errors.username || loginError}
                     </BootstrapForm.Control.Feedback>
                   </BootstrapForm.Group>
 
@@ -97,8 +101,8 @@ const LoginPage = () => {
                   </BootstrapForm.Group>
 
                   <div className="d-grid">
-                    <Button variant="primary" type="submit" disabled={status === 'loading'}>
-                      {status === 'loading' ? t('loginPage.button.loading') : t('loginPage.button.enter')}
+                    <Button variant="primary" type="submit" disabled={isLoading}>
+                      {isLoading ? t('loginPage.button.loading') : t('loginPage.button.enter')}
                     </Button>
                   </div>
                 </form>
