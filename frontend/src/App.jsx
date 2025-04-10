@@ -30,78 +30,46 @@ function App() {
     socketInstance.auth = { token };
     socketInstance.connect();
 
+    const toastConfig = {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    };
+
+    const coloredThemeConfig = { ...toastConfig, theme: 'colored' };
+    const lightThemeConfig = { ...toastConfig, theme: 'light' };
+
     socketInstance.on('newMessage', (payload) => {
       dispatch(addMessage(payload));
     });
 
     socketInstance.on('newChannel', (payload) => {
       dispatch(addChannel(payload));
-      toast.success(i18n.t('toasters.newChannel'), {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-      });
+      toast.success(i18n.t('toasters.newChannel'), coloredThemeConfig);
     });
 
     socketInstance.on('removeChannel', (payload) => {
       dispatch(removeChannel(payload.id));
-      toast.error(i18n.t('toasters.deletedChannel'), {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-      });
+      toast.error(i18n.t('toasters.deletedChannel'), coloredThemeConfig);
     });
 
     socketInstance.on('renameChannel', (payload) => {
       dispatch(updateChannel(payload));
-      toast.warn(i18n.t('toasters.editedChannel'), {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-      });
+      toast.warn(i18n.t('toasters.editedChannel'), coloredThemeConfig);
     });
 
     socketInstance.on('connect_error', (err) => {
       console.error('Ошибка подключения:', err.message);
-      toast.warn(i18n.t('toasters.networkErr'), {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      toast.warn(i18n.t('toasters.networkErr'), lightThemeConfig);
     });
 
     socketInstance.on('reconnect', () => {
       console.log('Подключение восстановлено');
-      toast.success(i18n.t('toasters.networkRestored'), {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      toast.success(i18n.t('toasters.networkRestored'), lightThemeConfig);
     });
 
     return () => {
