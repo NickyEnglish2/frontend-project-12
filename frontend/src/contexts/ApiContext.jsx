@@ -20,26 +20,19 @@ export const ApiProvider = ({ children }) => {
   const { token } = useAuth();
   const dispatch = useDispatch();
 
-  const fetchChannels = () => dispatch(fetchChannelsApi(token));
-
-  const addChannel = async (name) => addChannelApi(name, token);
-
-  const removeChannel = async (channelId) => removeChannelApi(channelId, token);
-  
-  const editChannel = async (channelId, name) => editChannelApi(channelId, name, token);
-
-  const sendMessage = async (message) => sendMessageApi(message, token);
-
-  const removeMessage = async (messageId) => removeMessageApi(messageId, token);
-
   const value = useMemo(() => ({
-    fetchChannels,
-    addChannel,
-    removeChannel,
-    editChannel,
-    sendMessage,
-    removeMessage,
-  }), [fetchChannels, addChannel, removeChannel, editChannel, sendMessage, removeMessage]);
+    fetchChannels: () => dispatch(fetchChannelsApi(token)),
+    
+    addChannel: async (name) => addChannelApi(name, token),
+    
+    removeChannel: async (channelId) => removeChannelApi(channelId, token),
+    
+    editChannel: async (channelId, name) => editChannelApi(channelId, name, token),
+    
+    sendMessage: async (message) => sendMessageApi(message, token),
+    
+    removeMessage: async (messageId) => removeMessageApi(messageId, token),
+  }), [dispatch, token]);
 
   return (
     <ApiContext.Provider value={value}>
