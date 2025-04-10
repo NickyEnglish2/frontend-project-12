@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from 'react-icons/fa';
-import { setCurrentChannel } from '../../slices/channelsSlice.js';
+import { setCurrentChannel, removeChannelAsync } from '../../slices/channelsSlice.js';
 import { showModal, hideModal } from '../../slices/modalsSlice.js';
-import { removeChannel, removeMessage } from '../../utilities/index';
-import { removeMessageRedux } from '../../slices/messagesSlice.js';
+import { removeMessage } from '../../utilities/index';
 
 const ChannelsSidebar = () => {
   const dispatch = useDispatch();
@@ -26,8 +25,7 @@ const ChannelsSidebar = () => {
         messagesToDelete.map((msg) => removeMessage(msg.id, token)),
       );
 
-      await removeChannel(channelId, token);
-      dispatch(removeMessageRedux(channelId));
+      await dispatch(removeChannelAsync({ channelId, token })).unwrap();
       dispatch(hideModal());
     } catch (err) {
       console.error('Ошибка при удалении', err);

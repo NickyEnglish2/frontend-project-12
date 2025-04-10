@@ -1,7 +1,16 @@
 /* eslint-disable no-param-reassign */
 
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchChannels } from '../utilities/index';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchChannels, removeChannel as removeChannelApi } from '../utilities/index';
+
+export const removeChannelAsync = createAsyncThunk(
+  'channels/removeChannel',
+  async ({ channelId, token }, { dispatch }) => {
+    await removeChannelApi(channelId, token);
+    dispatch(removeChannel(channelId));
+    return channelId;
+  }
+);
 
 const initialState = {
   channels: [],
