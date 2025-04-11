@@ -19,11 +19,11 @@ const ChannelsSidebar = () => {
 
   const handleDeleteChannel = async (channelId) => {
     try {
-      const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
+      // const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
 
-      await Promise.all(
-        messagesToDelete.map((msg) => removeMessage(msg.id, token)),
-      );
+      // await Promise.all(
+      //   messagesToDelete.map((msg) => removeMessage(msg.id, token)),
+      // );
 
       await dispatch(removeChannelAsync({ channelId, token })).unwrap();
       dispatch(hideModal());
