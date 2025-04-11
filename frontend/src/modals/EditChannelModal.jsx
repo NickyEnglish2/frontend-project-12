@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { censorText, editChannel } from '../utilities/index';
 import { updateChannel } from '../slices/channelsSlice';
 
-const EditChannelModal = ({ show, onHide, channel }) => {
+const EditChannelModal = ({ show, onHide, channelId, channelName }) => {
   const dispatch = useDispatch();
   const { channels } = useSelector((state) => state.channels);
   const { token } = useSelector((state) => state.auth);
@@ -25,18 +25,18 @@ const EditChannelModal = ({ show, onHide, channel }) => {
       .min(3, t('editChannelModal.validation.min'))
       .max(20, t('editChannelModal.validation.max'))
       .required(t('editChannelModal.validation.required'))
-      .test('unique', t('editChannelModal.validation.unique'), (value) => !channels.some((ch) => ch.name === value && ch.id !== channel.id)),
+      .test('unique', t('editChannelModal.validation.unique'), (value) => !channels.some((ch) => ch.name === value && ch.id !== channelId)),
   });
 
   const formik = useFormik({
     initialValues: {
-      name: channel?.name || '',
+      name: channelName || '',
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       const censoredNewName = censorText(values.name);
       try {
-        const editedChannel = await editChannel(channel.id, censoredNewName, token);
+        const editedChannel = await editChannel(channelId, censoredNewName, token);
         dispatch(updateChannel(editedChannel));
         onHide();
         resetForm();
@@ -49,7 +49,7 @@ const EditChannelModal = ({ show, onHide, channel }) => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t('editChannelModal.title', { channelName: channel?.name })}</Modal.Title>
+        <Modal.Title>{t('editChannelModal.title', { channelName })}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>

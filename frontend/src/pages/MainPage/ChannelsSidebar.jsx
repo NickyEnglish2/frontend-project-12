@@ -8,11 +8,29 @@ import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from 'react-icons/fa';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
 import { showModal } from '../../slices/modalsSlice.js';
+// import { removeMessage } from '../../utilities/index';
 
 const ChannelsSidebar = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channels);
+  // const { messages } = useSelector((state) => state.messages);
+  const { token } = useSelector((state) => state.auth);
+
+  //const handleDeleteChannel = async (channelId) => {
+  // try {
+  // const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
+
+      // await Promise.all(
+      //   messagesToDelete.map((msg) => removeMessage(msg.id, token)),
+      // );
+
+      // await dispatch(removeChannelAsync({ channelId, token })).unwrap();
+      // dispatch(hideModal());
+    // } catch (err) {
+      // console.error('Ошибка при удалении', err);
+    // }
+  //};
 
   const handleShowAddChannel = () => {
     dispatch(showModal({ modalType: 'addChannel' }));
@@ -21,17 +39,14 @@ const ChannelsSidebar = () => {
   const handleShowEditChannel = (channel) => {
     dispatch(showModal({
       modalType: 'editChannel',
-      modalProps: { channel },
+      modalProps: { channelId: channel.id, channelName: channel.name },
     }));
   };
 
   const handleShowDeleteChannel = (channelId, channelName) => {
     dispatch(showModal({
       modalType: 'deleteChannel',
-      modalProps: {
-        channelId,
-        channelName,
-      },
+      modalProps: { channelId, channelName },
     }));
   };
 

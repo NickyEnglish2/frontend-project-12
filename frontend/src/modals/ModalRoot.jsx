@@ -32,7 +32,8 @@ const ModalRoot = () => {
         <SpecificModal
           show
           onHide={handleHide}
-          channel={modalProps.channel}
+          channelId={modalProps.channelId}
+          channelName={modalProps.channelName}
         />
       );
     case 'deleteChannel':
@@ -40,8 +41,8 @@ const ModalRoot = () => {
         <SpecificModal
           show
           onHide={handleHide}
+          channelId={modalProps.channelId}
           channelName={modalProps.channelName}
-          onConfirm={modalProps.onConfirm}
         />
       );
     default:
