@@ -60,6 +60,7 @@ export default {
         messageCount_few: '{{count}} сообщения',
         messageCount_many: '{{count}} сообщений',
       },
+      channelsControl: 'Управление каналом',
     },
     confirmDeleteModal: {
       title: 'Удаление канала',

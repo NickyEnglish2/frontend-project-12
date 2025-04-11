@@ -86,7 +86,7 @@ const ChannelsSidebar = () => {
                       padding: '4px 8px',
                     }}
                   >
-                    <span className="visually-hidden">Управление каналом</span>
+                    <span className="visually-hidden">{t('mainPage.channelsControl')}</span>
                     <FaEllipsisV size={16} />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
