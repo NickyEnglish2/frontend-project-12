@@ -15,22 +15,22 @@ const ChannelsSidebar = () => {
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   // const { messages } = useSelector((state) => state.messages);
-  const { token } = useSelector((state) => state.auth);
+  // const { token } = useSelector((state) => state.auth);
 
-  //const handleDeleteChannel = async (channelId) => {
-  // try {
-  // const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
+  // const handleDeleteChannel = async (channelId) => {
+  //   try {
+  //     const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
 
-      // await Promise.all(
-      //   messagesToDelete.map((msg) => removeMessage(msg.id, token)),
-      // );
+  //     await Promise.all(
+  //       messagesToDelete.map((msg) => removeMessage(msg.id, token)),
+  //     );
 
-      // await dispatch(removeChannelAsync({ channelId, token })).unwrap();
-      // dispatch(hideModal());
-    // } catch (err) {
-      // console.error('Ошибка при удалении', err);
-    // }
-  //};
+  //     await dispatch(removeChannelAsync({ channelId, token })).unwrap();
+  //     dispatch(hideModal());
+  //   } catch (err) {
+  //     console.error('Ошибка при удалении', err);
+  //   }
+  // };
 
   const handleShowAddChannel = () => {
     dispatch(showModal({ modalType: 'addChannel' }));

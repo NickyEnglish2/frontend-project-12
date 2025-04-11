@@ -7,7 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { censorText, editChannel } from '../utilities/index';
 import { updateChannel } from '../slices/channelsSlice';
 
-const EditChannelModal = ({ show, onHide, channelId, channelName }) => {
+const EditChannelModal = ({
+  show,
+  onHide,
+  channelId,
+  channelName,
+}) => {
   const dispatch = useDispatch();
   const { channels } = useSelector((state) => state.channels);
   const { token } = useSelector((state) => state.auth);
