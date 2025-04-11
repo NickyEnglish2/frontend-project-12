@@ -11,10 +11,9 @@ const ChatArea = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channels);
-  const { messages } = useSelector((state) => state.messages);
+  const currentMessages = useSelector((state) => state.messages.messages.filter((msg) => msg.channelId === currentChannelId));
   const { username } = useSelector((state) => state.auth);
 
-  const currentMessages = messages.filter((msg) => msg.channelId === currentChannelId);
   const formatMessageCount = (count) => t('mainPage.messages.messageCount', { count });
 
   const formik = useFormik({
