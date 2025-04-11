@@ -6,31 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { BiAddToQueue } from 'react-icons/bi';
 import { FaEllipsisV } from 'react-icons/fa';
-import { setCurrentChannel, removeChannelAsync } from '../../slices/channelsSlice.js';
-import { showModal, hideModal } from '../../slices/modalsSlice.js';
-import { removeMessage } from '../../utilities/index';
+import { setCurrentChannel } from '../../slices/channelsSlice.js';
+import { showModal } from '../../slices/modalsSlice.js';
 
 const ChannelsSidebar = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channels);
-  const { messages } = useSelector((state) => state.messages);
-  const { token } = useSelector((state) => state.auth);
-
-  const handleDeleteChannel = async (channelId) => {
-    try {
-      // const messagesToDelete = messages.filter((msg) => msg.channelId === channelId);
-
-      // await Promise.all(
-      //   messagesToDelete.map((msg) => removeMessage(msg.id, token)),
-      // );
-
-      await dispatch(removeChannelAsync({ channelId, token })).unwrap();
-      dispatch(hideModal());
-    } catch (err) {
-      console.error('Ошибка при удалении', err);
-    }
-  };
 
   const handleShowAddChannel = () => {
     dispatch(showModal({ modalType: 'addChannel' }));
@@ -47,10 +29,8 @@ const ChannelsSidebar = () => {
     dispatch(showModal({
       modalType: 'deleteChannel',
       modalProps: {
+        channelId,
         channelName,
-        onConfirm: async () => {
-          await handleDeleteChannel(channelId);
-        },
       },
     }));
   };
